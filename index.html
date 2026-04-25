@@ -1,1 +1,29 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stránka</title>
+  <style>
+    /* CSS2/základní CSS3 - žádný Grid, žádný gap */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 10px; }
+    .box { display: -webkit-box; display: -webkit-flex; display: flex; }
+  </style>
+</head>
+<body>
+  <h1>Ahoj!</h1>
+  <script>
+    // Pouze ES5!
+    var nazev = "test";
+    document.querySelector("h1").innerHTML = nazev;
+    
+    // XMLHttpRequest místo fetch
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/data.json", true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) { /* hotovo */ }
+    };
+    xhr.send();
+  </script>
+</body>
+</html>
