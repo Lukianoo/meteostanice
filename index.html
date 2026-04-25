@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Domaci panel</title>
 <style>
-/* === ZADNE CSS PROMENNE - Android 4.2 je nepodporuje spolehline === */
-/* === ZADNE rgba() pro pozadi - pouzivame pevne hex barvy === */
-
 * {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -48,9 +45,6 @@ html, body {
   -webkit-box-align: center;
   -webkit-align-items: center;
   align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
   background-color: #0a1e3a;
   border: 1px solid #1a4a7a;
   border-top: 3px solid #00ccff;
@@ -73,7 +67,6 @@ html, body {
 #date-str {
   font-size: 0.72em;
   color: #4499bb;
-  letter-spacing: 1px;
 }
 
 #center-label {
@@ -81,19 +74,10 @@ html, body {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
-}
-
-#center-label div:first-child {
   font-size: 0.6em;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   color: #2a6688;
   font-family: 'Courier New', monospace;
-}
-
-#center-label div:last-child {
-  font-size: 0.58em;
-  color: #1a4466;
-  letter-spacing: 2px;
 }
 
 #greeting-block {
@@ -159,15 +143,14 @@ html, body {
   overflow: hidden;
   margin-bottom: 5px;
 }
-
 .card:last-child { margin-bottom: 0; }
 
-.c-weather  { background-color: #0e1f10; border: 1px solid #2a5a2a; border-top: 2px solid #88cc00; }
-.c-outdoor  { background-color: #081a2a; border: 1px solid #1a3a5a; border-top: 2px solid #00ccff; }
-.c-light    { background-color: #1a0808; border: 1px solid #4a1a1a; border-top: 2px solid #ff2244; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
-.c-solar    { background-color: #1a1200; border: 1px solid #4a3a00; border-top: 2px solid #ffcc00; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
-.c-ambboil  { background-color: #120a1a; border: 1px solid #3a1a5a; border-top: 2px solid #cc44ff; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
-.c-kotelna  { background-color: #0a1a08; border: 1px solid #1a4a1a; border-top: 2px solid #00ee66; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
+.c-weather { background-color: #0e1f10; border: 1px solid #2a5a2a; border-top: 2px solid #88cc00; }
+.c-outdoor { background-color: #081a2a; border: 1px solid #1a3a5a; border-top: 2px solid #00ccff; }
+.c-light   { background-color: #1a0808; border: 1px solid #4a1a1a; border-top: 2px solid #ff2244; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
+.c-solar   { background-color: #1a1200; border: 1px solid #4a3a00; border-top: 2px solid #ffcc00; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
+.c-ambboil { background-color: #120a1a; border: 1px solid #3a1a5a; border-top: 2px solid #cc44ff; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
+.c-kotelna { background-color: #0a1a08; border: 1px solid #1a4a1a; border-top: 2px solid #00ee66; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
 
 .card-title {
   font-size: 0.6em;
@@ -178,21 +161,8 @@ html, body {
   font-family: 'Courier New', monospace;
 }
 
-/* ===== HODNOTY ===== */
-.big {
-  font-size: 2.0em;
-  font-weight: bold;
-  font-family: 'Courier New', monospace;
-  line-height: 1.0;
-}
-
-.med {
-  font-size: 1.5em;
-  font-weight: bold;
-  font-family: 'Courier New', monospace;
-  line-height: 1.0;
-}
-
+.big { font-size: 2.0em; font-weight: bold; font-family: 'Courier New', monospace; line-height: 1.0; }
+.med { font-size: 1.5em; font-weight: bold; font-family: 'Courier New', monospace; line-height: 1.0; }
 .unit { font-size: 0.5em; color: #446688; }
 
 .col-cyan   { color: #00ddff; }
@@ -202,18 +172,12 @@ html, body {
 .col-orange { color: #ff9900; }
 .col-purple { color: #cc44ff; }
 
-.val-label {
-  font-size: 0.65em;
-  color: #446688;
-  margin-top: 2px;
-}
+.val-label { font-size: 0.65em; color: #446688; margin-top: 2px; }
 
-/* ===== THERMO BAR ===== */
 .thermo-wrap {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: horizontal;
   -webkit-flex-direction: row;
   flex-direction: row;
   -webkit-box-align: center;
@@ -221,25 +185,10 @@ html, body {
   align-items: center;
   margin-top: 4px;
 }
-
-.thermo-label  { font-size: 0.58em; color: #335566; width: 22px; }
-.thermo-label-r{ font-size: 0.58em; color: #335566; width: 22px; text-align: right; }
-
-.thermo-bg {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-  height: 7px;
-  background-color: #0d1e2e;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.thermo-fill {
-  height: 100%;
-  border-radius: 4px;
-  width: 0%;
-}
+.tl  { font-size: 0.58em; color: #335566; width: 22px; }
+.tlr { font-size: 0.58em; color: #335566; width: 22px; text-align: right; }
+.thermo-bg { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; height: 7px; background-color: #0d1e2e; border-radius: 4px; overflow: hidden; }
+.thermo-fill { height: 100%; border-radius: 4px; width: 2%; }
 
 .fill-cyan   { background-color: #00aadd; }
 .fill-gold   { background-color: #ddaa00; }
@@ -247,139 +196,84 @@ html, body {
 .fill-orange { background-color: #dd8800; }
 .fill-purple { background-color: #aa33dd; }
 
-/* ===== ROW FLEX ===== */
-.row {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-}
+.row { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-flex-direction: row; flex-direction: row; }
+.row-half { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
+.divv { width: 1px; background-color: #1a3a5a; margin: 0 8px; }
 
-.row-half {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-}
-
-.divider-v {
-  width: 1px;
-  background-color: #1a3a5a;
-  margin: 0 8px;
-}
-
-/* ===== POCASI ===== */
-#weather-icon { font-size: 2.0em; line-height: 1; margin-right: 8px; }
-#weather-desc { font-size: 0.95em; font-weight: bold; color: #ccffcc; }
+#weather-icon   { font-size: 2.0em; line-height: 1; margin-right: 8px; }
+#weather-desc   { font-size: 0.95em; font-weight: bold; color: #ccffcc; }
 #weather-hlaska { font-size: 0.68em; color: #ffcc00; font-style: italic; margin-top: 2px; }
-#weather-temp { font-size: 1.9em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; }
+#weather-temp   { font-size: 1.9em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; }
 
-/* ===== BLESKY ===== */
 .light-box {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-  background-color: #220a0a;
-  border: 1px solid #4a1515;
-  border-radius: 5px;
-  padding: 5px 3px;
-  text-align: center;
-  margin-right: 4px;
+  -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
+  background-color: #220a0a; border: 1px solid #4a1515;
+  border-radius: 5px; padding: 5px 3px; text-align: center; margin-right: 4px;
 }
 .light-box:last-child { margin-right: 0; }
 
-/* ===== STATUS DOT ===== */
-.dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 4px;
-  vertical-align: middle;
-}
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
 .dot-green  { background-color: #00ee66; }
 .dot-yellow { background-color: #ffcc00; }
 .dot-red    { background-color: #ff3355; }
 
-/* ===== REFRESH BAR ===== */
-#refresh-wrap {
-  height: 3px;
-  background-color: #0d1e2e;
-  border-radius: 2px;
-  overflow: hidden;
-  margin-top: 5px;
-}
-#refresh-fill {
-  height: 100%;
-  background-color: #0099bb;
-  border-radius: 2px;
-  width: 0%;
-}
+#refresh-wrap { height: 3px; background-color: #0d1e2e; border-radius: 2px; overflow: hidden; margin-top: 5px; }
+#refresh-fill { height: 100%; background-color: #0099bb; border-radius: 2px; width: 0%; }
 
-/* ===== LOADING ===== */
-.loading { color: #224466; font-style: italic; font-size: 0.9em; }
-
+.loading { color: #334455; font-style: italic; }
 #ld-updated { font-size: 0.58em; color: #224466; text-align: right; margin-top: 3px; }
+#dbg { font-size: 0.55em; color: #334455; margin-top: 2px; }
 </style>
 </head>
 <body>
-
 <div id="app">
 
-  <!-- HEADER -->
   <div id="header">
     <div id="clock-block">
       <div id="clock">00:00:00</div>
       <div id="date-str">...</div>
     </div>
-    <div id="center-label">
-      <div>DOMACI PANEL</div>
-      <div>PALKOVICE</div>
-    </div>
+    <div id="center-label">DOMACI PANEL<br>PALKOVICE</div>
     <div id="greeting-block">
       <div id="greeting">Ahoj Janicko!</div>
     </div>
   </div>
 
-  <!-- MAIN -->
   <div id="main">
 
-    <!-- LEVY SLOUPEC -->
     <div id="col-left">
 
-      <!-- POCASI -->
       <div class="card c-weather">
-        <div class="card-title">&#9729; POCASI - PALKOVICE</div>
-        <div class="row" style="-webkit-box-align:center; -webkit-align-items:center; align-items:center;">
-          <div id="weather-icon">&#9728;</div>
+        <div class="card-title">POCASI - PALKOVICE</div>
+        <div class="row" style="-webkit-box-align:center;align-items:center;">
+          <div id="weather-icon">?</div>
           <div>
             <div id="weather-desc">Nacitam...</div>
             <div id="weather-hlaska"></div>
           </div>
-          <div id="weather-temp">-- <span style="font-size:0.45em; color:#446688;">C</span></div>
+          <div id="weather-temp">--</div>
         </div>
       </div>
 
-      <!-- VENKOVNI TEPLOTA -->
       <div class="card c-outdoor">
-        <div class="card-title">&#127776; VENKOVNI TEPLOTA</div>
-        <div class="row" style="-webkit-box-align:center; -webkit-align-items:center; align-items:center;">
+        <div class="card-title">VENKOVNI TEPLOTA</div>
+        <div class="row" style="-webkit-box-align:center;align-items:center;">
           <div>
             <div class="big col-cyan" id="outdoor-temp"><span class="loading">---</span></div>
             <div class="val-label">Namereno venku</div>
           </div>
-          <div style="margin-left:auto; text-align:right;">
-            <span class="dot dot-green" id="outdoor-dot"></span><span style="font-size:0.65em; color:#446688;" id="outdoor-age">--</span>
+          <div style="margin-left:auto;text-align:right;">
+            <span class="dot dot-green" id="outdoor-dot"></span>
+            <span style="font-size:0.65em;color:#446688;" id="outdoor-age">--</span>
           </div>
         </div>
         <div class="thermo-wrap">
-          <div class="thermo-label">-20</div>
+          <div class="tl">-20</div>
           <div class="thermo-bg"><div class="thermo-fill fill-cyan" id="outdoor-bar"></div></div>
-          <div class="thermo-label-r">+40</div>
+          <div class="tlr">+40</div>
         </div>
       </div>
 
-      <!-- BLESKY -->
       <div class="card c-light">
         <div class="card-title">&#9889; BOURKOVA STANICE</div>
         <div class="row">
@@ -402,74 +296,71 @@ html, body {
 
     </div>
 
-    <!-- PRAVY SLOUPEC -->
     <div id="col-right">
 
-      <!-- SOLARNI BOJLER -->
       <div class="card c-solar">
-        <div class="card-title">&#9728; SOLARNI BOJLER</div>
+        <div class="card-title">SOLARNI BOJLER</div>
         <div class="row">
           <div class="row-half">
             <div class="val-label">Vystup z panelu</div>
             <div class="med col-orange" id="solar-panels"><span class="loading">---</span></div>
             <div class="thermo-wrap">
-              <div class="thermo-label">0</div>
+              <div class="tl">0</div>
               <div class="thermo-bg"><div class="thermo-fill fill-orange" id="solar-panels-bar"></div></div>
-              <div class="thermo-label-r">120</div>
+              <div class="tlr">120</div>
             </div>
           </div>
-          <div class="divider-v"></div>
+          <div class="divv"></div>
           <div class="row-half">
             <div class="val-label">Bojler</div>
             <div class="med col-gold" id="solar-boiler"><span class="loading">---</span></div>
             <div class="thermo-wrap">
-              <div class="thermo-label">0</div>
+              <div class="tl">0</div>
               <div class="thermo-bg"><div class="thermo-fill fill-gold" id="solar-boiler-bar"></div></div>
-              <div class="thermo-label-r">100</div>
+              <div class="tlr">100</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- OBOJZIVELNY BOJLER -->
       <div class="card c-ambboil">
-        <div class="card-title">&#128167; OBOJZIVELNY BOJLER</div>
+        <div class="card-title">OBOJZIVELNY BOJLER</div>
         <div class="big col-purple" id="amb-boiler"><span class="loading">---</span></div>
         <div class="val-label">Teplota vody v bojleru</div>
         <div class="thermo-wrap">
-          <div class="thermo-label">0</div>
+          <div class="tl">0</div>
           <div class="thermo-bg"><div class="thermo-fill fill-purple" id="amb-boiler-bar"></div></div>
-          <div class="thermo-label-r">90</div>
+          <div class="tlr">90</div>
         </div>
       </div>
 
-      <!-- KOTELNA - pouze teplota na kotli -->
       <div class="card c-kotelna">
         <div class="card-title">&#128293; KOTELNA</div>
         <div class="val-label">Teplota na kotli</div>
         <div class="big col-green" id="kotel-temp"><span class="loading">---</span></div>
         <div class="thermo-wrap">
-          <div class="thermo-label">0</div>
+          <div class="tl">0</div>
           <div class="thermo-bg"><div class="thermo-fill fill-green" id="kotel-bar"></div></div>
-          <div class="thermo-label-r">90</div>
+          <div class="tlr">90</div>
         </div>
       </div>
 
     </div>
-
   </div>
 </div>
 
 <script>
-// ===== CISTE ES5 =====
+// ============================================================
+// CISTE ES5 - JSONP pro ThingSpeak (obchazi SSL problemy)
+// ============================================================
 
 var DAYS   = ['Nedele','Pondeli','Utery','Streda','Ctvrtek','Patek','Sobota'];
 var MONTHS = ['ledna','unora','brezna','dubna','kvetna','cervna','cervence','srpna','zari','rijna','listopadu','prosince'];
-
-// Pozdravy - pouzivame bezne znaky ktere tablet zvladne
 var greetings = ['Ahoj Janicko!', 'Ahoj Adelko!', 'Ahoj Majo!', 'Ahoj Luki!'];
 var gIdx = 0;
 var gEl  = document.getElementById('greeting');
+gEl.style['-webkit-transition'] = 'opacity 0.6s';
+gEl.style.transition = 'opacity 0.6s';
 
 function rotateGreeting() {
   gEl.style.opacity = '0';
@@ -481,11 +372,6 @@ function rotateGreeting() {
 }
 setInterval(rotateGreeting, 10000);
 
-// Plynuly prechod opacity
-gEl.style['-webkit-transition'] = 'opacity 0.6s';
-gEl.style.transition = 'opacity 0.6s';
-
-// Hodiny
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
 function updateClock() {
@@ -498,108 +384,120 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// ===== XHR helper s timeoutem =====
-function getJSON(url, callback) {
-  var done = false;
-  var xhr = new XMLHttpRequest();
-
-  var timer = setTimeout(function() {
-    if (!done) {
-      done = true;
-      try { xhr.abort(); } catch(e) {}
-      callback('timeout', null);
-    }
-  }, 12000);
-
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState !== 4) return;
-    clearTimeout(timer);
-    if (done) return;
-    done = true;
-    if (xhr.status === 200) {
-      try {
-        callback(null, JSON.parse(xhr.responseText));
-      } catch(e) {
-        callback('parse', null);
-      }
-    } else {
-      callback('http ' + xhr.status, null);
-    }
-  };
-
-  try {
-    xhr.open('GET', url, true);
-    xhr.send();
-  } catch(e) {
-    clearTimeout(timer);
-    if (!done) { done = true; callback('open err', null); }
-  }
-}
-
-// ===== ThingSpeak helper =====
-function loadTS(channelId, callback) {
-  var url = 'https://api.thingspeak.com/channels/' + channelId + '/feeds.json?results=1';
-  getJSON(url, callback);
-}
-
-function fv(data, n) {
-  if (!data || !data.feeds || !data.feeds.length) return null;
-  var v = data.feeds[0]['field' + n];
-  if (v === null || v === undefined || v === '') return null;
-  var f = parseFloat(v);
-  return isNaN(f) ? null : f;
-}
-
-function ft(val) {
-  if (val === null) return '---';
-  return (Math.round(val * 10) / 10) + '<span class="unit"> C</span>';
-}
-
-function bw(val, mn, mx) {
-  if (val === null) return '2%';
-  var p = (val - mn) / (mx - mn) * 100;
-  if (p < 2)   p = 2;
-  if (p > 100) p = 100;
-  return Math.round(p) + '%';
-}
-
 function setEl(id, html) {
   var el = document.getElementById(id);
   if (el) el.innerHTML = html;
 }
-
 function setW(id, w) {
   var el = document.getElementById(id);
   if (el) el.style.width = w;
 }
+function fv(feeds, n) {
+  if (!feeds || !feeds.length) return null;
+  var v = feeds[0]['field' + n];
+  if (v === null || v === undefined || v === '') return null;
+  var f = parseFloat(v);
+  return isNaN(f) ? null : f;
+}
+function ft(val) {
+  if (val === null) return '---';
+  return (Math.round(val * 10) / 10) + '<span class="unit"> C</span>';
+}
+function bw(val, mn, mx) {
+  if (val === null) return '2%';
+  var p = (val - mn) / (mx - mn) * 100;
+  if (p < 2) p = 2;
+  if (p > 100) p = 100;
+  return Math.round(p) + '%';
+}
 
-// ===== BLESKY - kanal 3272958 =====
+// ============================================================
+// JSONP loader - pouziva <script> tag misto XHR
+// ThingSpeak podporuje ?callback=nazevFunkce
+// ============================================================
+var jsonpCbs = {};
+var jsonpSeq = 0;
+
+function jsonpLoad(url, callback) {
+  var cbName = '_ts' + (jsonpSeq++);
+  var done   = false;
+  var script = document.createElement('script');
+
+  // Timeout - pokud se nenacte do 12s, vrat chybu
+  var timer = setTimeout(function() {
+    if (done) return;
+    done = true;
+    delete window[cbName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+    callback('timeout', null);
+  }, 12000);
+
+  window[cbName] = function(data) {
+    clearTimeout(timer);
+    if (done) return;
+    done = true;
+    delete window[cbName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+    callback(null, data);
+  };
+
+  // Separator - ThingSpeak pouziva ? i & spravne
+  var sep = url.indexOf('?') >= 0 ? '&' : '?';
+  script.src = url + sep + 'callback=' + cbName + '&t=' + new Date().getTime();
+  script.type = 'text/javascript';
+
+  script.onerror = function() {
+    clearTimeout(timer);
+    if (done) return;
+    done = true;
+    delete window[cbName];
+    callback('script error', null);
+  };
+
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+// ============================================================
+// ThingSpeak - vždy pres JSONP
+// ============================================================
+function loadTS(channelId, callback) {
+  var url = 'https://api.thingspeak.com/channels/' + channelId + '/feeds.json?results=1';
+  jsonpLoad(url, callback);
+}
+
+// ============================================================
+// BLESKY - kanal 3272958
+// field4=vzdalenost, field5=cas od posl. blesku, field7=blesku/5min
+// ============================================================
 function loadLightning() {
   loadTS(3272958, function(err, data) {
-    if (err || !data) {
-      setEl('ld-time',  '<span class="loading">!</span>');
-      setEl('ld-dist',  '<span class="loading">!</span>');
-      setEl('ld-count', '<span class="loading">!</span>');
-      setEl('ld-updated', 'Chyba: ' + (err || 'zadna data'));
+    if (err || !data || !data.feeds) {
+      setEl('ld-time',    '<span class="loading">!</span>');
+      setEl('ld-dist',    '<span class="loading">!</span>');
+      setEl('ld-count',   '<span class="loading">!</span>');
+      setEl('ld-updated', 'Chyba: ' + (err || 'no data'));
       return;
     }
-    var t = fv(data, 5);
-    var d = fv(data, 4);
-    var c = fv(data, 7);
+    var t = fv(data.feeds, 5);
+    var d = fv(data.feeds, 4);
+    var c = fv(data.feeds, 7);
     setEl('ld-time',  t !== null ? Math.round(t) + '<span class="unit"> min</span>' : '---');
-    setEl('ld-dist',  d !== null ? (Math.round(d*10)/10) + '<span class="unit"> km</span>' : '---');
+    setEl('ld-dist',  d !== null ? (Math.round(d * 10) / 10) + '<span class="unit"> km</span>' : '---');
     setEl('ld-count', c !== null ? Math.round(c) + '' : '---');
     var now = new Date();
-    setEl('ld-updated', 'Aktualizovano: ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds()));
+    setEl('ld-updated', 'OK ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds()));
   });
 }
 
-// ===== SOLARNI BOJLER - kanal 33442 =====
+// ============================================================
+// SOLARNI BOJLER - kanal 33442
+// field1=panely, field2=bojler
+// ============================================================
 function loadSolar() {
   loadTS(33442, function(err, data) {
-    if (err || !data) return;
-    var p = fv(data, 1);
-    var b = fv(data, 2);
+    if (err || !data || !data.feeds) return;
+    var p = fv(data.feeds, 1);
+    var b = fv(data.feeds, 2);
     setEl('solar-panels', ft(p));
     setEl('solar-boiler', ft(b));
     setW('solar-panels-bar', bw(p, 0, 120));
@@ -607,13 +505,16 @@ function loadSolar() {
   });
 }
 
-// ===== KOTELNA - kanal 231269 =====
+// ============================================================
+// KOTELNA - kanal 231269
+// field3=obojzivelny bojler, field4=venkovni teplota, field5=kotel
+// ============================================================
 function loadKotelna() {
   loadTS(231269, function(err, data) {
-    if (err || !data) return;
-    var ab = fv(data, 3);
-    var ot = fv(data, 4);
-    var kt = fv(data, 5);
+    if (err || !data || !data.feeds) return;
+    var ab = fv(data.feeds, 3);
+    var ot = fv(data.feeds, 4);
+    var kt = fv(data.feeds, 5);
 
     setEl('outdoor-temp', ft(ot));
     setW('outdoor-bar', bw(ot, -20, 40));
@@ -624,66 +525,110 @@ function loadKotelna() {
     setEl('kotel-temp', ft(kt));
     setW('kotel-bar', bw(kt, 0, 90));
 
-    if (data.feeds && data.feeds[0] && data.feeds[0].created_at) {
+    if (data.feeds[0] && data.feeds[0].created_at) {
       var lu  = new Date(data.feeds[0].created_at);
       var now = new Date();
       var dm  = Math.round((now - lu) / 60000);
       setEl('outdoor-age', dm + ' min zpet');
       var dot = document.getElementById('outdoor-dot');
-      if (dot) {
-        dot.className = 'dot ' + (dm < 15 ? 'dot-green' : (dm < 60 ? 'dot-yellow' : 'dot-red'));
-      }
+      if (dot) dot.className = 'dot ' + (dm < 15 ? 'dot-green' : dm < 60 ? 'dot-yellow' : 'dot-red');
     }
   });
 }
 
-// ===== POCASI - Open-Meteo =====
+// ============================================================
+// POCASI - Open-Meteo (XHR - ma lepsi SSL kompatibilitu nez ThingSpeak)
+// ============================================================
 var WC = {
-  0:  { i: '&#9728;',   d: 'Jasno',           h: 'Krasny den - vylez ven!' },
-  1:  { i: '&#9729;',   d: 'Prevazne jasno',   h: 'Vic slunce nez mraku!' },
-  2:  { i: '&#9925;',   d: 'Polojasno',        h: 'Slunce i mraky - fair play' },
-  3:  { i: '&#9729;',   d: 'Zatazeno',         h: 'Den jako prikryty dekou...' },
-  45: { i: '&#127787;', d: 'Mlha',             h: 'Tajemne rano v polích!' },
-  48: { i: '&#127787;', d: 'Ledova mlha',      h: 'Opatrne na ledovce!' },
-  51: { i: '&#127746;', d: 'Mrholeni',         h: 'Ani dest, ani sucho...' },
-  61: { i: '&#127783;', d: 'Slaby dest',       h: 'Destnik nebo hazard?' },
-  63: { i: '&#127783;', d: 'Dest',             h: 'Dnes si odpocinem doma!' },
-  65: { i: '&#127783;', d: 'Silny dest',       h: 'Archa Noemova by se hodila!' },
-  71: { i: '&#10052;',  d: 'Slaby snih',       h: 'Vlocky padaji! Kde jsou sane?' },
-  73: { i: '&#10052;',  d: 'Snezeni',          h: 'Zima v plne parade!' },
-  75: { i: '&#10052;',  d: 'Silne snezeni',    h: 'Zasypava nas!' },
-  80: { i: '&#127782;', d: 'Prehanjky',        h: 'Ted mokro, za chvili sucho...' },
-  95: { i: '&#9928;',   d: 'Bourka',           h: 'Blesky! Schovat elektroniku!' },
-  99: { i: '&#9928;',   d: 'Silna bourka',     h: 'Zustat doma!' }
+  0:  { d: 'Jasno',           h: 'Krasny den - vylez ven!' },
+  1:  { d: 'Prevazne jasno',  h: 'Vic slunce nez mraku!' },
+  2:  { d: 'Polojasno',       h: 'Slunce i mraky - fair play' },
+  3:  { d: 'Zatazeno',        h: 'Den jako prikryty dekou...' },
+  45: { d: 'Mlha',            h: 'Tajemne rano v polích!' },
+  48: { d: 'Ledova mlha',     h: 'Opatrne na ledovce!' },
+  51: { d: 'Mrholeni',        h: 'Ani dest, ani sucho...' },
+  53: { d: 'Mrholeni',        h: 'Destenicko by se hodilo' },
+  55: { d: 'Silne mrholeni',  h: 'Uz je to skoro dest!' },
+  61: { d: 'Slaby dest',      h: 'Destnik nebo hazard?' },
+  63: { d: 'Dest',            h: 'Dnes si odpocinem doma!' },
+  65: { d: 'Silny dest',      h: 'Archa Noemova by se hodila!' },
+  71: { d: 'Slaby snih',      h: 'Vlocky padaji!' },
+  73: { d: 'Snezeni',         h: 'Zima v plne parade!' },
+  75: { d: 'Silne snezeni',   h: 'Zasypava nas!' },
+  77: { d: 'Kroupy',          h: 'Schovat auto!' },
+  80: { d: 'Prehanjky',       h: 'Ted mokro, za chvili sucho...' },
+  81: { d: 'Prehanjky',       h: 'Typicka moravska prehanjka' },
+  82: { d: 'Silne prehanjky', h: 'Pekna prcha!' },
+  85: { d: 'Snehove prehanjky',h:'Snehulek by sel udelat!' },
+  95: { d: 'Bourka',          h: 'Blesky! Schovat elektroniku!' },
+  96: { d: 'Bourka s krupy',  h: 'Pozor - kroupy!' },
+  99: { d: 'Silna bourka',    h: 'Zustat doma!' }
 };
 
 function loadWeather() {
+  // Open-Meteo zkusime pres XHR (ma lepsi TLS nez starsi ThingSpeak endpointy)
+  var xhr = new XMLHttpRequest();
   var url = 'https://api.open-meteo.com/v1/forecast?latitude=49.626&longitude=18.137&current_weather=true&timezone=Europe%2FPrague&forecast_days=1';
-  getJSON(url, function(err, data) {
-    if (err || !data || !data.current_weather) {
-      setEl('weather-desc', 'Nedostupne');
-      setEl('weather-hlaska', 'Zkuste znovu za chvili');
-      return;
+  var done = false;
+
+  var timer = setTimeout(function() {
+    if (done) return;
+    done = true;
+    try { xhr.abort(); } catch(e) {}
+    setEl('weather-desc', 'Timeout');
+  }, 12000);
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    clearTimeout(timer);
+    if (done) return;
+    done = true;
+    if (xhr.status === 200) {
+      try {
+        var data = JSON.parse(xhr.responseText);
+        var cw   = data.current_weather;
+        var code = cw.weathercode;
+        var temp = cw.temperature;
+        var w    = WC[code] || { d: 'Kod ' + code, h: 'Pocasi nas prekvapuje!' };
+        setEl('weather-desc',   w.d);
+        setEl('weather-hlaska', w.h);
+        setEl('weather-temp',   (Math.round(temp * 10) / 10) + '<span style="font-size:0.45em;color:#446688;"> C</span>');
+        // jednoducha ikona podle kodu
+        var ikon = '?';
+        if (code === 0)                       ikon = '(o)';
+        else if (code <= 2)                   ikon = '(oO)';
+        else if (code === 3)                  ikon = '(---)';
+        else if (code <= 48)                  ikon = '(~~)';
+        else if (code <= 67)                  ikon = '(,,)';
+        else if (code <= 77)                  ikon = '(***)';
+        else if (code <= 82)                  ikon = '(:,:)';
+        else                                  ikon = '(!!)';
+        setEl('weather-icon', ikon);
+      } catch(e) {
+        setEl('weather-desc', 'Chyba dat');
+      }
+    } else {
+      setEl('weather-desc', 'HTTP ' + xhr.status);
     }
-    var cw   = data.current_weather;
-    var code = cw.weathercode;
-    var temp = cw.temperature;
-    var w    = WC[code] || { i: '&#9729;', d: 'Kod ' + code, h: 'Pocasi nas prekvapuje!' };
-    setEl('weather-icon',   w.i);
-    setEl('weather-desc',   w.d);
-    setEl('weather-hlaska', w.h);
-    setEl('weather-temp',   (Math.round(temp * 10)/10) + '<span style="font-size:0.45em; color:#446688;"> C</span>');
-  });
+  };
+  try {
+    xhr.open('GET', url, true);
+    xhr.send();
+  } catch(e) {
+    clearTimeout(timer);
+    setEl('weather-desc', 'Chyba spojeni');
+  }
 }
 
-// ===== REFRESH BAR =====
+// ============================================================
+// REFRESH BAR
+// ============================================================
 var INTERVAL = 60;
 var tick = 0;
 
 function tickBar() {
   tick++;
-  var pct = Math.round(tick / INTERVAL * 100);
-  setW('refresh-fill', pct + '%');
+  setW('refresh-fill', Math.round(tick / INTERVAL * 100) + '%');
   if (tick >= INTERVAL) {
     tick = 0;
     setW('refresh-fill', '0%');
