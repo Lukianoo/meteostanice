@@ -1,29 +1,880 @@
 <!DOCTYPE html>
-<html>
+<html lang="cs">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stránka</title>
-  <style>
-    /* CSS2/základní CSS3 - žádný Grid, žádný gap */
-    body { font-family: Arial, sans-serif; margin: 0; padding: 10px; }
-    .box { display: -webkit-box; display: -webkit-flex; display: flex; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Domácí panel</title>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Orbitron:400,700,900|Exo+2:300,400,600');
+
+:root {
+  --bg: #05080f;
+  --panel: rgba(10,20,40,0.85);
+  --border: rgba(0,200,255,0.18);
+  --cyan: #00e5ff;
+  --cyan2: #00bcd4;
+  --gold: #ffd600;
+  --red: #ff1744;
+  --green: #00e676;
+  --orange: #ff9100;
+  --blue: #2979ff;
+  --purple: #d500f9;
+  --text: #e0f7fa;
+  --dim: rgba(0,229,255,0.45);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Exo 2', Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Animated starfield background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(0,80,150,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,40,100,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 80%, rgba(0,60,120,0.12) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.grid-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+  padding: 6px;
+  gap: 6px;
+}
+
+/* ===================== HEADER ===================== */
+#header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(0,20,50,0.95), rgba(0,40,80,0.9));
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--cyan);
+  border-radius: 8px;
+  padding: 6px 14px;
+  -webkit-box-shadow: 0 0 20px rgba(0,229,255,0.12), inset 0 1px 0 rgba(0,229,255,0.1);
+  box-shadow: 0 0 20px rgba(0,229,255,0.12), inset 0 1px 0 rgba(0,229,255,0.1);
+}
+
+#clock {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.2em;
+  font-weight: 900;
+  color: var(--cyan);
+  text-shadow: 0 0 20px var(--cyan), 0 0 40px rgba(0,229,255,0.4);
+  letter-spacing: 3px;
+}
+
+#date-str {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.82em;
+  color: var(--dim);
+  letter-spacing: 1px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#greeting {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.15em;
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 0 15px rgba(255,214,0,0.6);
+  text-align: right;
+  letter-spacing: 1px;
+  -webkit-transition: opacity 0.6s;
+  transition: opacity 0.6s;
+}
+
+#greeting.fade {
+  opacity: 0;
+}
+
+/* ===================== MAIN BODY ===================== */
+#main {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  gap: 6px;
+  overflow: hidden;
+}
+
+/* ===================== LEFT COLUMN ===================== */
+#col-left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  width: 42%;
+  gap: 6px;
+}
+
+/* ===================== RIGHT COLUMN ===================== */
+#col-right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  gap: 6px;
+}
+
+/* ===================== PANEL CARD ===================== */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  -webkit-box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 8px 8px 0 0;
+}
+
+.card-cyan::before { background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
+.card-gold::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.card-green::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+.card-red::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
+.card-purple::before { background: linear-gradient(90deg, transparent, var(--purple), transparent); }
+.card-orange::before { background: linear-gradient(90deg, transparent, var(--orange), transparent); }
+
+.card-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.62em;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 6px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  line-height: 14px;
+  font-size: 13px;
+}
+
+/* ===================== WEATHER ===================== */
+#weather-card {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+#weather-main {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#weather-icon {
+  font-size: 2.4em;
+  line-height: 1;
+}
+
+#weather-desc {
+  font-size: 0.95em;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+#weather-hlaska {
+  font-size: 0.72em;
+  color: var(--gold);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+#weather-temp {
+  margin-left: auto;
+  font-family: 'Orbitron', monospace;
+  font-size: 2em;
+  font-weight: 900;
+  color: var(--cyan);
+  text-shadow: 0 0 15px rgba(0,229,255,0.5);
+}
+
+#weather-temp span {
+  font-size: 0.5em;
+  color: var(--dim);
+}
+
+/* ===================== OUTDOOR TEMP HIGHLIGHT ===================== */
+#outdoor-highlight {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.big-val {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.6em;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.big-val.cyan { color: var(--cyan); text-shadow: 0 0 20px rgba(0,229,255,0.6); }
+.big-val.gold { color: var(--gold); text-shadow: 0 0 20px rgba(255,214,0,0.5); }
+.big-val.green { color: var(--green); text-shadow: 0 0 20px rgba(0,230,118,0.5); }
+.big-val.red { color: var(--red); text-shadow: 0 0 20px rgba(255,23,68,0.5); }
+.big-val.orange { color: var(--orange); text-shadow: 0 0 20px rgba(255,145,0,0.5); }
+.big-val.purple { color: var(--purple); text-shadow: 0 0 20px rgba(213,0,249,0.5); }
+
+.val-label {
+  font-size: 0.72em;
+  color: var(--dim);
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+}
+
+.unit {
+  font-size: 0.55em;
+  color: var(--dim);
+  vertical-align: super;
+}
+
+/* ===================== LIGHTNING ===================== */
+#lightning-card {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.lightning-grid {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  gap: 6px;
+}
+
+.lightning-item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  background: rgba(255,23,68,0.06);
+  border: 1px solid rgba(255,23,68,0.2);
+  border-radius: 6px;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.lightning-item .big-val {
+  font-size: 1.8em;
+}
+
+.lightning-item .val-label {
+  font-size: 0.62em;
+  text-align: center;
+}
+
+#bolt-flash {
+  display: inline-block;
+  animation: boltpulse 2s infinite;
+}
+
+@keyframes boltpulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 10px #ff1744; }
+  50% { opacity: 0.4; text-shadow: none; }
+}
+
+/* ===================== SOLAR / BOILER ===================== */
+.boiler-grid {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  gap: 8px;
+}
+
+.boiler-item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  text-align: center;
+}
+
+/* Thermometer bar */
+.thermo-wrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.thermo-bar-bg {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.thermo-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  -webkit-transition: width 1s ease;
+  transition: width 1s ease;
+  min-width: 4px;
+}
+
+.fill-cyan { background: linear-gradient(90deg, var(--cyan2), var(--cyan)); box-shadow: 0 0 6px var(--cyan); }
+.fill-gold { background: linear-gradient(90deg, #ff6f00, var(--gold)); box-shadow: 0 0 6px var(--gold); }
+.fill-green { background: linear-gradient(90deg, #00c853, var(--green)); box-shadow: 0 0 6px var(--green); }
+.fill-orange { background: linear-gradient(90deg, #e65100, var(--orange)); box-shadow: 0 0 6px var(--orange); }
+.fill-purple { background: linear-gradient(90deg, #aa00ff, var(--purple)); box-shadow: 0 0 6px var(--purple); }
+
+/* Status indicator dot */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+  animation: pulse-dot 2s infinite;
+  vertical-align: middle;
+}
+
+.dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.dot-red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.dot-yellow { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* scan line effect */
+.scanline {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,229,255,0.01) 3px,
+    rgba(0,229,255,0.01) 4px
+  );
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+/* loading / error state */
+.loading {
+  color: rgba(0,229,255,0.4);
+  font-size: 0.8em;
+  font-style: italic;
+  animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* Refresh indicator */
+#refresh-bar {
+  height: 2px;
+  background: rgba(0,229,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+#refresh-fill {
+  height: 100%;
+  background: var(--cyan);
+  border-radius: 2px;
+  width: 0%;
+  -webkit-transition: width 0.5s linear;
+  transition: width 0.5s linear;
+}
+
+/* kotel row */
+.kotel-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+</style>
 </head>
 <body>
-  <h1>Ahoj!</h1>
-  <script>
-    // Pouze ES5!
-    var nazev = "test";
-    document.querySelector("h1").innerHTML = nazev;
-    
-    // XMLHttpRequest místo fetch
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/data.json", true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) { /* hotovo */ }
-    };
-    xhr.send();
-  </script>
+<div class="grid-bg"></div>
+
+<div id="app">
+
+  <!-- ===== HEADER ===== -->
+  <div id="header">
+    <div>
+      <div id="clock">00:00:00</div>
+      <div id="date-str">načítám datum...</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:0.6em; letter-spacing:3px; color:rgba(0,229,255,0.4); font-family:'Orbitron',monospace; margin-bottom:2px;">DOMÁCÍ PANEL</div>
+      <div style="font-size:0.65em; color:rgba(0,229,255,0.25); letter-spacing:1px;">PALKOVICE</div>
+    </div>
+    <div id="greeting">Ahoj Janičko!</div>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <div id="main">
+
+    <!-- LEFT COLUMN -->
+    <div id="col-left">
+
+      <!-- POČASÍ -->
+      <div class="card card-gold" id="weather-card">
+        <div class="scanline"></div>
+        <div class="card-title"><span class="icon">&#9729;</span> POČASÍ – PALKOVICE</div>
+        <div id="weather-main">
+          <div id="weather-icon">&#127773;</div>
+          <div>
+            <div id="weather-desc">Načítám...</div>
+            <div id="weather-hlaska"></div>
+          </div>
+          <div id="weather-temp">–– <span>°C</span></div>
+        </div>
+      </div>
+
+      <!-- VENKOVNÍ TEPLOTA (velká) -->
+      <div class="card card-cyan">
+        <div class="scanline"></div>
+        <div class="card-title"><span class="icon">&#127751;</span> VENKOVNÍ TEPLOTA</div>
+        <div id="outdoor-highlight">
+          <div>
+            <div class="big-val cyan" id="outdoor-temp"><span class="loading">···</span></div>
+            <div class="val-label">Naměřeno venku</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.7em; color:var(--dim);">Čidlo</div>
+            <div style="font-size:0.7em; color:var(--dim);">Kotelna</div>
+            <div style="margin-top:4px;"><span class="status-dot dot-green" id="outdoor-dot"></span><span style="font-size:0.65em; color:var(--dim);" id="outdoor-age">–</span></div>
+          </div>
+        </div>
+        <div class="thermo-wrap">
+          <div style="font-size:0.6em; color:var(--dim);">-20°</div>
+          <div class="thermo-bar-bg"><div class="thermo-bar-fill fill-cyan" id="outdoor-bar" style="width:50%"></div></div>
+          <div style="font-size:0.6em; color:var(--dim);">+40°</div>
+        </div>
+      </div>
+
+      <!-- BLESKY -->
+      <div class="card card-red" id="lightning-card" style="-webkit-box-flex:1;flex:1;">
+        <div class="scanline"></div>
+        <div class="card-title"><span id="bolt-flash">&#9889;</span> BOUŘKOVÁ STANICE</div>
+        <div class="lightning-grid">
+          <div class="lightning-item">
+            <div class="big-val red" id="ld-time"><span class="loading">···</span></div>
+            <div class="val-label">min. od blesku</div>
+          </div>
+          <div class="lightning-item">
+            <div class="big-val orange" id="ld-dist"><span class="loading">···</span></div>
+            <div class="val-label">km vzdálenost</div>
+          </div>
+          <div class="lightning-item">
+            <div class="big-val gold" id="ld-count"><span class="loading">···</span></div>
+            <div class="val-label">blesků / 5 min</div>
+          </div>
+        </div>
+        <div id="refresh-bar"><div id="refresh-fill"></div></div>
+        <div style="margin-top:4px; font-size:0.62em; color:var(--dim); text-align:right;" id="ld-updated">Poslední aktualizace: –</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div id="col-right">
+
+      <!-- SOLÁRNÍ BOJLER -->
+      <div class="card card-gold" style="-webkit-box-flex:1;flex:1;">
+        <div class="scanline"></div>
+        <div class="card-title"><span class="icon">&#9728;</span> SOLÁRNÍ BOJLER</div>
+        <div class="boiler-grid">
+          <div class="boiler-item">
+            <div class="val-label" style="text-align:left;">Výstup z panelů</div>
+            <div class="big-val orange" id="solar-panels" style="font-size:2em;"><span class="loading">···</span></div>
+            <div class="thermo-wrap">
+              <div style="font-size:0.6em; color:var(--dim);">0°</div>
+              <div class="thermo-bar-bg"><div class="thermo-bar-fill fill-orange" id="solar-panels-bar" style="width:0%"></div></div>
+              <div style="font-size:0.6em; color:var(--dim);">100°</div>
+            </div>
+          </div>
+          <div style="width:1px; background:var(--border);"></div>
+          <div class="boiler-item">
+            <div class="val-label" style="text-align:left;">Bojler</div>
+            <div class="big-val gold" id="solar-boiler" style="font-size:2em;"><span class="loading">···</span></div>
+            <div class="thermo-wrap">
+              <div style="font-size:0.6em; color:var(--dim);">0°</div>
+              <div class="thermo-bar-bg"><div class="thermo-bar-fill fill-gold" id="solar-boiler-bar" style="width:0%"></div></div>
+              <div style="font-size:0.6em; color:var(--dim);">100°</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOJLER OBOJŽIVELNÝ -->
+      <div class="card card-purple" style="-webkit-box-flex:1;flex:1;">
+        <div class="scanline"></div>
+        <div class="card-title"><span class="icon">&#128167;</span> OBOJŽIVELNÝ BOJLER</div>
+        <div>
+          <div class="big-val purple" id="amb-boiler"><span class="loading">···</span></div>
+          <div class="val-label">Teplota vody v bojleru</div>
+          <div class="thermo-wrap">
+            <div style="font-size:0.6em; color:var(--dim);">0°</div>
+            <div class="thermo-bar-bg"><div class="thermo-bar-fill fill-purple" id="amb-boiler-bar" style="width:0%"></div></div>
+            <div style="font-size:0.6em; color:var(--dim);">90°</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KOTELNA -->
+      <div class="card card-green" style="-webkit-box-flex:1;flex:1;">
+        <div class="scanline"></div>
+        <div class="card-title"><span class="icon">&#128293;</span> KOTELNA</div>
+        <div class="kotel-row">
+          <div style="-webkit-box-flex:1;flex:1;">
+            <div class="val-label">Teplota v kotelně</div>
+            <div class="big-val green" id="kotelna-temp" style="font-size:1.9em;"><span class="loading">···</span></div>
+            <div class="thermo-wrap">
+              <div style="font-size:0.6em; color:var(--dim);">0°</div>
+              <div class="thermo-bar-bg"><div class="thermo-bar-fill fill-green" id="kotelna-bar" style="width:0%"></div></div>
+              <div style="font-size:0.6em; color:var(--dim);">60°</div>
+            </div>
+          </div>
+          <div style="width:1px; background:var(--border); margin:0 10px;"></div>
+          <div style="-webkit-box-flex:1;flex:1;">
+            <div class="val-label">&#128293; Teplota na kotli</div>
+            <div class="big-val orange" id="kotel-temp" style="font-size:1.9em;"><span class="loading">···</span></div>
+            <div class="thermo-wrap">
+              <div style="font-size:0.6em; color:var(--dim);">0°</div>
+              <div class="thermo-bar-bg"><div class="thermo-bar-fill fill-orange" id="kotel-bar" style="width:0%"></div></div>
+              <div style="font-size:0.6em; color:var(--dim);">90°</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== ES5 ONLY - žádné arrow functions, let/const, template literals =====================
+
+var DAYS = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
+var MONTHS = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
+
+var greetings = ['Ahoj Janičko! ♡', 'Ahoj Adélko! ✿', 'Ahoj Májo! ☀', 'Ahoj Luki! ★'];
+var greetingIndex = 0;
+var greetingEl = document.getElementById('greeting');
+
+function rotateGreeting() {
+  greetingEl.className = 'fade';
+  setTimeout(function() {
+    greetingIndex = (greetingIndex + 1) % greetings.length;
+    greetingEl.innerHTML = greetings[greetingIndex];
+    greetingEl.className = '';
+  }, 600);
+}
+setInterval(rotateGreeting, 10000);
+
+// ===================== HODINY =====================
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+function updateClock() {
+  var now = new Date();
+  var h = pad(now.getHours());
+  var m = pad(now.getMinutes());
+  var s = pad(now.getSeconds());
+  document.getElementById('clock').innerHTML = h + ':' + m + ':' + s;
+  var d = now;
+  document.getElementById('date-str').innerHTML =
+    DAYS[d.getDay()] + ' ' + d.getDate() + '. ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ===================== XMLHttpRequest helper =====================
+function getJSON(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          callback(null, data);
+        } catch(e) {
+          callback('parse error');
+        }
+      } else {
+        callback('status ' + xhr.status);
+      }
+    }
+  };
+  xhr.send();
+}
+
+// ===================== THINGSPEAK helper =====================
+function thingspeak(channelId, fields, callback) {
+  var fieldStr = fields.join(',');
+  var url = 'https://api.thingspeak.com/channels/' + channelId + '/feeds.json?results=1&field' + fields[0] + '=true';
+  // Fetch all needed fields; easiest: get last feed
+  url = 'https://api.thingspeak.com/channels/' + channelId + '/feeds.json?results=1';
+  getJSON(url, callback);
+}
+
+function fieldVal(data, fieldNum) {
+  if (!data || !data.feeds || !data.feeds[0]) return null;
+  var val = data.feeds[0]['field' + fieldNum];
+  if (val === null || val === undefined || val === '') return null;
+  return parseFloat(val);
+}
+
+function formatTemp(val) {
+  if (val === null) return '–';
+  return (Math.round(val * 10) / 10) + '<span class="unit">°C</span>';
+}
+
+function barWidth(val, min, max) {
+  if (val === null) return '0%';
+  var pct = (val - min) / (max - min) * 100;
+  if (pct < 2) pct = 2;
+  if (pct > 100) pct = 100;
+  return pct + '%';
+}
+
+// ===================== BOUŘKOVÁ STANICE (kanál 3272958) =====================
+// field4 = vzdálenost, field5 = čas od posledního blesku, field7 = blesků za 5 min
+function loadLightning() {
+  thingspeak(3272958, [4,5,7], function(err, data) {
+    if (err) {
+      document.getElementById('ld-time').innerHTML = '<span class="loading">ERR</span>';
+      document.getElementById('ld-dist').innerHTML = '<span class="loading">ERR</span>';
+      document.getElementById('ld-count').innerHTML = '<span class="loading">ERR</span>';
+      return;
+    }
+    var dist = fieldVal(data, 4);
+    var timeAgo = fieldVal(data, 5);
+    var count = fieldVal(data, 7);
+
+    document.getElementById('ld-time').innerHTML = timeAgo !== null ? Math.round(timeAgo) + '<span class="unit">min</span>' : '–';
+    document.getElementById('ld-dist').innerHTML = dist !== null ? (Math.round(dist * 10)/10) + '<span class="unit">km</span>' : '–';
+    document.getElementById('ld-count').innerHTML = count !== null ? Math.round(count) : '–';
+
+    var now = new Date();
+    document.getElementById('ld-updated').innerHTML = 'Aktualizováno: ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+  });
+}
+
+// ===================== SOLÁRNÍ BOJLER (kanál 33442) =====================
+// field1 = výstup z panelů, field2 = bojler
+function loadSolar() {
+  thingspeak(33442, [1,2], function(err, data) {
+    if (err) return;
+    var panels = fieldVal(data, 1);
+    var boiler = fieldVal(data, 2);
+
+    document.getElementById('solar-panels').innerHTML = formatTemp(panels);
+    document.getElementById('solar-boiler').innerHTML = formatTemp(boiler);
+    document.getElementById('solar-panels-bar').style.width = barWidth(panels, 0, 120);
+    document.getElementById('solar-boiler-bar').style.width = barWidth(boiler, 0, 100);
+  });
+}
+
+// ===================== KOTELNA (kanál 231269) =====================
+// field3 = teplota obojživelného bojleru, field4 = venkovní teplota, field5 = kotel
+function loadKotelna() {
+  thingspeak(231269, [3,4,5], function(err, data) {
+    if (err) return;
+    var ambBoiler = fieldVal(data, 3);
+    var outdoor = fieldVal(data, 4);
+    var kotel = fieldVal(data, 5);
+    var kotelna = fieldVal(data, 4); // field4 = venkovní = je v kotelně? Dáme outdoor do venkovní sekce
+
+    // Venkovní teplota
+    document.getElementById('outdoor-temp').innerHTML = formatTemp(outdoor);
+    document.getElementById('outdoor-bar').style.width = barWidth(outdoor, -20, 40);
+
+    // Obojživelný bojler
+    document.getElementById('amb-boiler').innerHTML = formatTemp(ambBoiler);
+    document.getElementById('amb-boiler-bar').style.width = barWidth(ambBoiler, 0, 90);
+
+    // Kotel
+    document.getElementById('kotel-temp').innerHTML = formatTemp(kotel);
+    document.getElementById('kotel-bar').style.width = barWidth(kotel, 0, 90);
+
+    // Teplota v kotelně - použijeme field3 (obojživelný bojler je v kotelně)
+    // Pro teplotu kotelny nenajdeme přesný field, zobrazíme co máme
+    // Pokud chceš jiný field pro teplotu kotelny, uprav fieldVal níže:
+    // Zatím zobrazíme obojživelný bojler jako referenci kotelny
+    // Jako "teplota kotelny" = vezmu field5 - to je kotel, kotelna asi nemá vlastní sensor
+    // Dám tam field3 = obojživelný bojler (je fyzicky v kotelně)
+    document.getElementById('kotelna-temp').innerHTML = formatTemp(ambBoiler);
+    document.getElementById('kotelna-bar').style.width = barWidth(ambBoiler, 0, 60);
+
+    // Aktualizace outdoor dot
+    if (data && data.feeds && data.feeds[0] && data.feeds[0].created_at) {
+      var lastUpdate = new Date(data.feeds[0].created_at);
+      var now = new Date();
+      var diffMin = Math.round((now - lastUpdate) / 60000);
+      document.getElementById('outdoor-age').innerHTML = diffMin + ' min zpět';
+      var dot = document.getElementById('outdoor-dot');
+      dot.className = 'status-dot ' + (diffMin < 15 ? 'dot-green' : (diffMin < 60 ? 'dot-yellow' : 'dot-red'));
+    }
+  });
+}
+
+// ===================== POČASÍ - Open-Meteo (zdarma, bez API klíče) =====================
+// Palkovice: 49.626°N, 18.137°E
+var weatherCodes = {
+  0:  { icon: '&#9728;',  desc: 'Jasno',       hlaska: 'Skvělý den na posezení na zahradě! ☀' },
+  1:  { icon: '&#127773;',desc: 'Převážně jasno', hlaska: 'Víc slunce než mraků – výhra! ✨' },
+  2:  { icon: '&#9925;',  desc: 'Polojasno',    hlaska: 'Slunce se peče, mraky koukají... 😏' },
+  3:  { icon: '&#9729;',  desc: 'Zataženo',     hlaska: 'Den jako přikrytý dekou. ☕' },
+  45: { icon: '&#127787;',desc: 'Mlha',         hlaska: 'Tajemné ráno – duchové v polích! 👻' },
+  48: { icon: '&#127787;',desc: 'Ledová mlha',  hlaska: 'Opatrně na ledě! 🧊' },
+  51: { icon: '&#127746;',desc: 'Mrholení',     hlaska: 'Tak trochu mokro, tak trochu ne. 😄' },
+  61: { icon: '&#127783;',desc: 'Slabý déšť',   hlaska: 'Bere si deštník, nebo neriskuje? 🌂' },
+  63: { icon: '&#127783;',desc: 'Déšť',         hlaska: 'Dnes si odpočineme doma! 🏠' },
+  65: { icon: '&#127783;',desc: 'Silný déšť',   hlaska: 'Archa Noemova by se hodila... ⛵' },
+  71: { icon: '&#10052;', desc: 'Slabý sníh',   hlaska: 'Vločky padají! Kde jsou saně? ⛷' },
+  73: { icon: '&#10052;', desc: 'Sněžení',      hlaska: 'Zima v plné parádě! ⛄' },
+  75: { icon: '&#10052;', desc: 'Silné sněžení',hlaska: 'Zasypává nás! 🏔' },
+  80: { icon: '&#127782;',desc: 'Přeháňky',     hlaska: 'Teď mokro, za chvíli sucho... 🎲' },
+  95: { icon: '&#9928;',  desc: 'Bouřka',       hlaska: 'Blesky na obzoru! ⚡ Schovat elektroniku!' },
+  99: { icon: '&#9928;',  desc: 'Silná bouřka', hlaska: 'Zkuste raději zůstat doma! ⚡⚡' }
+};
+
+function loadWeather() {
+  var url = 'https://api.open-meteo.com/v1/forecast?latitude=49.626&longitude=18.137&current_weather=true&hourly=precipitation_probability&timezone=Europe%2FPrague&forecast_days=1';
+  getJSON(url, function(err, data) {
+    if (err || !data || !data.current_weather) {
+      document.getElementById('weather-desc').innerHTML = 'Nedostupné';
+      return;
+    }
+    var cw = data.current_weather;
+    var code = cw.weathercode;
+    var temp = cw.temperature;
+    var w = weatherCodes[code] || { icon: '&#9729;', desc: 'Kód ' + code, hlaska: 'Počasí nás překvapuje! 🤷' };
+
+    document.getElementById('weather-icon').innerHTML = w.icon;
+    document.getElementById('weather-desc').innerHTML = w.desc;
+    document.getElementById('weather-hlaska').innerHTML = w.hlaska;
+    document.getElementById('weather-temp').innerHTML = (Math.round(temp * 10)/10) + '<span>°C</span>';
+  });
+}
+
+// ===================== REFRESH BAR =====================
+var REFRESH_INTERVAL = 60; // sekund
+var refreshCount = 0;
+
+function tickRefreshBar() {
+  refreshCount++;
+  var pct = (refreshCount / REFRESH_INTERVAL) * 100;
+  document.getElementById('refresh-fill').style.width = pct + '%';
+  if (refreshCount >= REFRESH_INTERVAL) {
+    refreshCount = 0;
+    document.getElementById('refresh-fill').style.width = '0%';
+    loadAll();
+  }
+}
+
+function loadAll() {
+  loadLightning();
+  loadSolar();
+  loadKotelna();
+  loadWeather();
+}
+
+// Start
+loadAll();
+setInterval(tickRefreshBar, 1000);
+
+</script>
 </body>
 </html>
