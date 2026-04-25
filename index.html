@@ -11,7 +11,6 @@
   margin: 0;
   padding: 0;
 }
-
 html, body {
   width: 100%;
   height: 100%;
@@ -20,7 +19,6 @@ html, body {
   font-family: Arial, sans-serif;
   overflow: hidden;
 }
-
 #app {
   display: -webkit-box;
   display: -webkit-flex;
@@ -33,13 +31,11 @@ html, body {
   padding: 5px;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 #header {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
   flex-direction: row;
   -webkit-box-align: center;
@@ -53,9 +49,7 @@ html, body {
   margin-bottom: 5px;
   height: 62px;
 }
-
 #clock-block { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
-
 #clock {
   font-size: 2.0em;
   font-weight: bold;
@@ -63,12 +57,7 @@ html, body {
   letter-spacing: 3px;
   font-family: 'Courier New', monospace;
 }
-
-#date-str {
-  font-size: 0.72em;
-  color: #4499bb;
-}
-
+#date-str { font-size: 0.72em; color: #4499bb; }
 #center-label {
   text-align: center;
   -webkit-box-flex: 1;
@@ -79,14 +68,7 @@ html, body {
   color: #2a6688;
   font-family: 'Courier New', monospace;
 }
-
-#greeting-block {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-  text-align: right;
-}
-
+#greeting-block { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; text-align: right; }
 #greeting {
   font-size: 1.05em;
   font-weight: bold;
@@ -95,13 +77,11 @@ html, body {
   font-family: 'Courier New', monospace;
 }
 
-/* ===== MAIN ===== */
+/* MAIN */
 #main {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
   flex-direction: row;
   -webkit-box-flex: 1;
@@ -109,25 +89,19 @@ html, body {
   flex: 1;
   overflow: hidden;
 }
-
 #col-left {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
   flex-direction: column;
   width: 44%;
   margin-right: 5px;
 }
-
 #col-right {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
   flex-direction: column;
   -webkit-box-flex: 1;
@@ -135,16 +109,14 @@ html, body {
   flex: 1;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 .card {
   border-radius: 6px;
   padding: 7px 10px;
-  position: relative;
   overflow: hidden;
   margin-bottom: 5px;
 }
 .card:last-child { margin-bottom: 0; }
-
 .c-weather { background-color: #0e1f10; border: 1px solid #2a5a2a; border-top: 2px solid #88cc00; }
 .c-outdoor { background-color: #081a2a; border: 1px solid #1a3a5a; border-top: 2px solid #00ccff; }
 .c-light   { background-color: #1a0808; border: 1px solid #4a1a1a; border-top: 2px solid #ff2244; -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
@@ -160,19 +132,16 @@ html, body {
   margin-bottom: 5px;
   font-family: 'Courier New', monospace;
 }
-
-.big { font-size: 2.0em; font-weight: bold; font-family: 'Courier New', monospace; line-height: 1.0; }
-.med { font-size: 1.5em; font-weight: bold; font-family: 'Courier New', monospace; line-height: 1.0; }
+.big  { font-size: 2.0em; font-weight: bold; font-family: 'Courier New', monospace; line-height: 1.0; }
+.med  { font-size: 1.5em; font-weight: bold; font-family: 'Courier New', monospace; line-height: 1.0; }
 .unit { font-size: 0.5em; color: #446688; }
-
 .col-cyan   { color: #00ddff; }
 .col-gold   { color: #ffcc00; }
 .col-green  { color: #00ee66; }
 .col-red    { color: #ff3355; }
 .col-orange { color: #ff9900; }
 .col-purple { color: #cc44ff; }
-
-.val-label { font-size: 0.65em; color: #446688; margin-top: 2px; }
+.val-label  { font-size: 0.65em; color: #446688; margin-top: 2px; }
 
 .thermo-wrap {
   display: -webkit-box;
@@ -187,23 +156,22 @@ html, body {
 }
 .tl  { font-size: 0.58em; color: #335566; width: 22px; }
 .tlr { font-size: 0.58em; color: #335566; width: 22px; text-align: right; }
-.thermo-bg { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; height: 7px; background-color: #0d1e2e; border-radius: 4px; overflow: hidden; }
+.thermo-bg   { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; height: 7px; background-color: #0d1e2e; border-radius: 4px; overflow: hidden; }
 .thermo-fill { height: 100%; border-radius: 4px; width: 2%; }
-
 .fill-cyan   { background-color: #00aadd; }
 .fill-gold   { background-color: #ddaa00; }
 .fill-green  { background-color: #00cc55; }
 .fill-orange { background-color: #dd8800; }
 .fill-purple { background-color: #aa33dd; }
 
-.row { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-flex-direction: row; flex-direction: row; }
+.row      { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-flex-direction: row; flex-direction: row; }
 .row-half { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
-.divv { width: 1px; background-color: #1a3a5a; margin: 0 8px; }
+.divv     { width: 1px; background-color: #1a3a5a; margin: 0 8px; }
 
-#weather-icon   { font-size: 2.0em; line-height: 1; margin-right: 8px; }
+#weather-icon   { font-size: 2.2em; line-height: 1; margin-right: 8px; min-width: 32px; text-align: center; }
 #weather-desc   { font-size: 0.95em; font-weight: bold; color: #ccffcc; }
 #weather-hlaska { font-size: 0.68em; color: #ffcc00; font-style: italic; margin-top: 2px; }
-#weather-temp   { font-size: 1.9em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; }
+#weather-temp   { font-size: 1.9em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; white-space: nowrap; }
 
 .light-box {
   -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
@@ -212,7 +180,7 @@ html, body {
 }
 .light-box:last-child { margin-right: 0; }
 
-.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+.dot        { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
 .dot-green  { background-color: #00ee66; }
 .dot-yellow { background-color: #ffcc00; }
 .dot-red    { background-color: #ff3355; }
@@ -220,9 +188,8 @@ html, body {
 #refresh-wrap { height: 3px; background-color: #0d1e2e; border-radius: 2px; overflow: hidden; margin-top: 5px; }
 #refresh-fill { height: 100%; background-color: #0099bb; border-radius: 2px; width: 0%; }
 
-.loading { color: #334455; font-style: italic; }
-#ld-updated { font-size: 0.58em; color: #224466; text-align: right; margin-top: 3px; }
-#dbg { font-size: 0.55em; color: #334455; margin-top: 2px; }
+.loading    { color: #334455; font-style: italic; }
+#ld-updated { font-size: 0.58em; color: #334466; text-align: right; margin-top: 3px; }
 </style>
 </head>
 <body>
@@ -246,7 +213,7 @@ html, body {
       <div class="card c-weather">
         <div class="card-title">POCASI - PALKOVICE</div>
         <div class="row" style="-webkit-box-align:center;align-items:center;">
-          <div id="weather-icon">?</div>
+          <div id="weather-icon">...</div>
           <div>
             <div id="weather-desc">Nacitam...</div>
             <div id="weather-hlaska"></div>
@@ -275,11 +242,11 @@ html, body {
       </div>
 
       <div class="card c-light">
-        <div class="card-title">&#9889; BOURKOVA STANICE</div>
+        <div class="card-title">** BOURKOVA STANICE</div>
         <div class="row">
           <div class="light-box">
             <div class="med col-red" id="ld-time"><span class="loading">---</span></div>
-            <div class="val-label">min. od blesku</div>
+            <div class="val-label">min od blesku</div>
           </div>
           <div class="light-box">
             <div class="med col-orange" id="ld-dist"><span class="loading">---</span></div>
@@ -287,7 +254,7 @@ html, body {
           </div>
           <div class="light-box">
             <div class="med col-gold" id="ld-count"><span class="loading">---</span></div>
-            <div class="val-label">blesku / 5 min</div>
+            <div class="val-label">blesku/5min</div>
           </div>
         </div>
         <div id="ld-updated">Aktualizuji...</div>
@@ -335,7 +302,7 @@ html, body {
       </div>
 
       <div class="card c-kotelna">
-        <div class="card-title">&#128293; KOTELNA</div>
+        <div class="card-title">KOTELNA</div>
         <div class="val-label">Teplota na kotli</div>
         <div class="big col-green" id="kotel-temp"><span class="loading">---</span></div>
         <div class="thermo-wrap">
@@ -351,9 +318,17 @@ html, body {
 
 <script>
 // ============================================================
-// CISTE ES5 - JSONP pro ThingSpeak (obchazi SSL problemy)
+// PROXY URL - vse prochazi pres Cloudflare Worker
 // ============================================================
+var PROXY = 'https://fragrant-haze-560fproxy.zachrc80.workers.dev';
 
+function proxyUrl(target) {
+  return PROXY + '?url=' + encodeURIComponent(target);
+}
+
+// ============================================================
+// ES5 - zakladni funkce
+// ============================================================
 var DAYS   = ['Nedele','Pondeli','Utery','Streda','Ctvrtek','Patek','Sobota'];
 var MONTHS = ['ledna','unora','brezna','dubna','kvetna','cervna','cervence','srpna','zari','rijna','listopadu','prosince'];
 var greetings = ['Ahoj Janicko!', 'Ahoj Adelko!', 'Ahoj Majo!', 'Ahoj Luki!'];
@@ -392,6 +367,41 @@ function setW(id, w) {
   var el = document.getElementById(id);
   if (el) el.style.width = w;
 }
+
+// ============================================================
+// XHR pres proxy - Cloudflare ma moderni SSL, tablet to zvladne
+// ============================================================
+function getJSON(url, callback) {
+  var done  = false;
+  var xhr   = new XMLHttpRequest();
+  var timer = setTimeout(function() {
+    if (done) return;
+    done = true;
+    try { xhr.abort(); } catch(e) {}
+    callback('timeout', null);
+  }, 15000);
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    clearTimeout(timer);
+    if (done) return;
+    done = true;
+    if (xhr.status === 200) {
+      try { callback(null, JSON.parse(xhr.responseText)); }
+      catch(e) { callback('parse err', null); }
+    } else {
+      callback('http ' + xhr.status, null);
+    }
+  };
+  try {
+    xhr.open('GET', url, true);
+    xhr.send();
+  } catch(e) {
+    clearTimeout(timer);
+    if (!done) { done = true; callback('open err', null); }
+  }
+}
+
 function fv(feeds, n) {
   if (!feeds || !feeds.length) return null;
   var v = feeds[0]['field' + n];
@@ -412,69 +422,16 @@ function bw(val, mn, mx) {
 }
 
 // ============================================================
-// JSONP loader - pouziva <script> tag misto XHR
-// ThingSpeak podporuje ?callback=nazevFunkce
-// ============================================================
-var jsonpCbs = {};
-var jsonpSeq = 0;
-
-function jsonpLoad(url, callback) {
-  var cbName = '_ts' + (jsonpSeq++);
-  var done   = false;
-  var script = document.createElement('script');
-
-  // Timeout - pokud se nenacte do 12s, vrat chybu
-  var timer = setTimeout(function() {
-    if (done) return;
-    done = true;
-    delete window[cbName];
-    if (script.parentNode) script.parentNode.removeChild(script);
-    callback('timeout', null);
-  }, 12000);
-
-  window[cbName] = function(data) {
-    clearTimeout(timer);
-    if (done) return;
-    done = true;
-    delete window[cbName];
-    if (script.parentNode) script.parentNode.removeChild(script);
-    callback(null, data);
-  };
-
-  // Separator - ThingSpeak pouziva ? i & spravne
-  var sep = url.indexOf('?') >= 0 ? '&' : '?';
-  script.src = url + sep + 'callback=' + cbName + '&t=' + new Date().getTime();
-  script.type = 'text/javascript';
-
-  script.onerror = function() {
-    clearTimeout(timer);
-    if (done) return;
-    done = true;
-    delete window[cbName];
-    callback('script error', null);
-  };
-
-  document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-// ============================================================
-// ThingSpeak - vždy pres JSONP
-// ============================================================
-function loadTS(channelId, callback) {
-  var url = 'https://api.thingspeak.com/channels/' + channelId + '/feeds.json?results=1';
-  jsonpLoad(url, callback);
-}
-
-// ============================================================
 // BLESKY - kanal 3272958
-// field4=vzdalenost, field5=cas od posl. blesku, field7=blesku/5min
+// field4=vzdalenost, field5=min od blesku, field7=blesku/5min
 // ============================================================
 function loadLightning() {
-  loadTS(3272958, function(err, data) {
+  var url = proxyUrl('https://api.thingspeak.com/channels/3272958/feeds.json?results=1');
+  getJSON(url, function(err, data) {
     if (err || !data || !data.feeds) {
-      setEl('ld-time',    '<span class="loading">!</span>');
-      setEl('ld-dist',    '<span class="loading">!</span>');
-      setEl('ld-count',   '<span class="loading">!</span>');
+      setEl('ld-time',    '!');
+      setEl('ld-dist',    '!');
+      setEl('ld-count',   '!');
       setEl('ld-updated', 'Chyba: ' + (err || 'no data'));
       return;
     }
@@ -483,7 +440,7 @@ function loadLightning() {
     var c = fv(data.feeds, 7);
     setEl('ld-time',  t !== null ? Math.round(t) + '<span class="unit"> min</span>' : '---');
     setEl('ld-dist',  d !== null ? (Math.round(d * 10) / 10) + '<span class="unit"> km</span>' : '---');
-    setEl('ld-count', c !== null ? Math.round(c) + '' : '---');
+    setEl('ld-count', c !== null ? '' + Math.round(c) : '---');
     var now = new Date();
     setEl('ld-updated', 'OK ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds()));
   });
@@ -494,7 +451,8 @@ function loadLightning() {
 // field1=panely, field2=bojler
 // ============================================================
 function loadSolar() {
-  loadTS(33442, function(err, data) {
+  var url = proxyUrl('https://api.thingspeak.com/channels/33442/feeds.json?results=1');
+  getJSON(url, function(err, data) {
     if (err || !data || !data.feeds) return;
     var p = fv(data.feeds, 1);
     var b = fv(data.feeds, 2);
@@ -510,20 +468,21 @@ function loadSolar() {
 // field3=obojzivelny bojler, field4=venkovni teplota, field5=kotel
 // ============================================================
 function loadKotelna() {
-  loadTS(231269, function(err, data) {
+  var url = proxyUrl('https://api.thingspeak.com/channels/231269/feeds.json?results=1');
+  getJSON(url, function(err, data) {
     if (err || !data || !data.feeds) return;
     var ab = fv(data.feeds, 3);
     var ot = fv(data.feeds, 4);
     var kt = fv(data.feeds, 5);
 
     setEl('outdoor-temp', ft(ot));
-    setW('outdoor-bar', bw(ot, -20, 40));
+    setW('outdoor-bar',   bw(ot, -20, 40));
 
-    setEl('amb-boiler', ft(ab));
-    setW('amb-boiler-bar', bw(ab, 0, 90));
+    setEl('amb-boiler',     ft(ab));
+    setW('amb-boiler-bar',  bw(ab, 0, 90));
 
     setEl('kotel-temp', ft(kt));
-    setW('kotel-bar', bw(kt, 0, 90));
+    setW('kotel-bar',   bw(kt, 0, 90));
 
     if (data.feeds[0] && data.feeds[0].created_at) {
       var lu  = new Date(data.feeds[0].created_at);
@@ -537,87 +496,61 @@ function loadKotelna() {
 }
 
 // ============================================================
-// POCASI - Open-Meteo (XHR - ma lepsi SSL kompatibilitu nez ThingSpeak)
+// POCASI - Open-Meteo pres proxy
 // ============================================================
 var WC = {
-  0:  { d: 'Jasno',           h: 'Krasny den - vylez ven!' },
-  1:  { d: 'Prevazne jasno',  h: 'Vic slunce nez mraku!' },
-  2:  { d: 'Polojasno',       h: 'Slunce i mraky - fair play' },
-  3:  { d: 'Zatazeno',        h: 'Den jako prikryty dekou...' },
-  45: { d: 'Mlha',            h: 'Tajemne rano v polích!' },
-  48: { d: 'Ledova mlha',     h: 'Opatrne na ledovce!' },
-  51: { d: 'Mrholeni',        h: 'Ani dest, ani sucho...' },
-  53: { d: 'Mrholeni',        h: 'Destenicko by se hodilo' },
-  55: { d: 'Silne mrholeni',  h: 'Uz je to skoro dest!' },
-  61: { d: 'Slaby dest',      h: 'Destnik nebo hazard?' },
-  63: { d: 'Dest',            h: 'Dnes si odpocinem doma!' },
-  65: { d: 'Silny dest',      h: 'Archa Noemova by se hodila!' },
-  71: { d: 'Slaby snih',      h: 'Vlocky padaji!' },
-  73: { d: 'Snezeni',         h: 'Zima v plne parade!' },
-  75: { d: 'Silne snezeni',   h: 'Zasypava nas!' },
-  77: { d: 'Kroupy',          h: 'Schovat auto!' },
-  80: { d: 'Prehanjky',       h: 'Ted mokro, za chvili sucho...' },
-  81: { d: 'Prehanjky',       h: 'Typicka moravska prehanjka' },
-  82: { d: 'Silne prehanjky', h: 'Pekna prcha!' },
-  85: { d: 'Snehove prehanjky',h:'Snehulek by sel udelat!' },
-  95: { d: 'Bourka',          h: 'Blesky! Schovat elektroniku!' },
-  96: { d: 'Bourka s krupy',  h: 'Pozor - kroupy!' },
-  99: { d: 'Silna bourka',    h: 'Zustat doma!' }
+  0:  { d: 'Jasno',            h: 'Krasny den - vylez ven!' },
+  1:  { d: 'Prevazne jasno',   h: 'Vic slunce nez mraku!' },
+  2:  { d: 'Polojasno',        h: 'Slunce i mraky - fair play' },
+  3:  { d: 'Zatazeno',         h: 'Den jako prikryty dekou...' },
+  45: { d: 'Mlha',             h: 'Tajemne rano v polích!' },
+  48: { d: 'Ledova mlha',      h: 'Opatrne na ledovce!' },
+  51: { d: 'Mrholeni',         h: 'Ani dest, ani sucho...' },
+  53: { d: 'Mrholeni',         h: 'Destenicko by se hodilo' },
+  55: { d: 'Silne mrholeni',   h: 'Uz je to skoro dest!' },
+  61: { d: 'Slaby dest',       h: 'Destnik nebo hazard?' },
+  63: { d: 'Dest',             h: 'Dnes si odpocinem doma!' },
+  65: { d: 'Silny dest',       h: 'Archa Noemova by se hodila!' },
+  71: { d: 'Slaby snih',       h: 'Vlocky padaji!' },
+  73: { d: 'Snezeni',          h: 'Zima v plne parade!' },
+  75: { d: 'Silne snezeni',    h: 'Zasypava nas!' },
+  77: { d: 'Kroupy',           h: 'Schovat auto!' },
+  80: { d: 'Prehanjky',        h: 'Ted mokro, za chvili sucho...' },
+  81: { d: 'Prehanjky',        h: 'Typicka moravska prehanjka' },
+  82: { d: 'Silne prehanjky',  h: 'Pekna prcha!' },
+  85: { d: 'Snehove prehanjky',h: 'Snehulek by sel udelat!' },
+  95: { d: 'Bourka',           h: 'Blesky! Schovat elektroniku!' },
+  96: { d: 'Bourka s krupy',   h: 'Pozor - kroupy!' },
+  99: { d: 'Silna bourka',     h: 'Zustat doma!' }
+};
+
+var weatherIcons = {
+  0: '(O)', 1: '(o)', 2: '(o~)', 3: '(--)',
+  45: '(~~)', 48: '(~~)', 51: '(,)', 53: '(,)', 55: '(,,)',
+  61: '(,,)', 63: '(,,,)', 65: '(:::)', 71: '(**)', 73: '(***)',
+  75: '(***)', 77: '(0)', 80: '(:)', 81: '(:)', 82: '(::)',
+  85: '(*)', 95: '(!)', 96: '(!)', 99: '(!!)'
 };
 
 function loadWeather() {
-  // Open-Meteo zkusime pres XHR (ma lepsi TLS nez starsi ThingSpeak endpointy)
-  var xhr = new XMLHttpRequest();
-  var url = 'https://api.open-meteo.com/v1/forecast?latitude=49.626&longitude=18.137&current_weather=true&timezone=Europe%2FPrague&forecast_days=1';
-  var done = false;
-
-  var timer = setTimeout(function() {
-    if (done) return;
-    done = true;
-    try { xhr.abort(); } catch(e) {}
-    setEl('weather-desc', 'Timeout');
-  }, 12000);
-
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState !== 4) return;
-    clearTimeout(timer);
-    if (done) return;
-    done = true;
-    if (xhr.status === 200) {
-      try {
-        var data = JSON.parse(xhr.responseText);
-        var cw   = data.current_weather;
-        var code = cw.weathercode;
-        var temp = cw.temperature;
-        var w    = WC[code] || { d: 'Kod ' + code, h: 'Pocasi nas prekvapuje!' };
-        setEl('weather-desc',   w.d);
-        setEl('weather-hlaska', w.h);
-        setEl('weather-temp',   (Math.round(temp * 10) / 10) + '<span style="font-size:0.45em;color:#446688;"> C</span>');
-        // jednoducha ikona podle kodu
-        var ikon = '?';
-        if (code === 0)                       ikon = '(o)';
-        else if (code <= 2)                   ikon = '(oO)';
-        else if (code === 3)                  ikon = '(---)';
-        else if (code <= 48)                  ikon = '(~~)';
-        else if (code <= 67)                  ikon = '(,,)';
-        else if (code <= 77)                  ikon = '(***)';
-        else if (code <= 82)                  ikon = '(:,:)';
-        else                                  ikon = '(!!)';
-        setEl('weather-icon', ikon);
-      } catch(e) {
-        setEl('weather-desc', 'Chyba dat');
-      }
-    } else {
-      setEl('weather-desc', 'HTTP ' + xhr.status);
+  var target = 'https://api.open-meteo.com/v1/forecast?latitude=49.626&longitude=18.137&current_weather=true&timezone=Europe%2FPrague&forecast_days=1';
+  var url = proxyUrl(target);
+  getJSON(url, function(err, data) {
+    if (err || !data || !data.current_weather) {
+      setEl('weather-desc',   'Nedostupne');
+      setEl('weather-hlaska', 'Chyba: ' + (err || '?'));
+      return;
     }
-  };
-  try {
-    xhr.open('GET', url, true);
-    xhr.send();
-  } catch(e) {
-    clearTimeout(timer);
-    setEl('weather-desc', 'Chyba spojeni');
-  }
+    var cw   = data.current_weather;
+    var code = cw.weathercode;
+    var temp = cw.temperature;
+    var w    = WC[code]           || { d: 'Kod ' + code, h: 'Pocasi nas prekvapuje!' };
+    var icon = weatherIcons[code] || '(?)';
+    setEl('weather-icon',   icon);
+    setEl('weather-desc',   w.d);
+    setEl('weather-hlaska', w.h);
+    setEl('weather-temp',   (Math.round(temp * 10) / 10) + '<span style="font-size:0.45em;color:#446688;"> C</span>');
+  });
 }
 
 // ============================================================
