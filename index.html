@@ -45,7 +45,7 @@ html, body {
   min-width: 190px;
 }
 
-#date-str { font-size: 0.82em; color: #3388aa; margin-top: 1px; }
+#date-str { font-size: 0.95em; color: #00aacc; margin-top: 2px; font-weight: bold; }
 
 #center-hdr {
   -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
@@ -112,25 +112,25 @@ html, body {
 .c-kotelna { background-color: #081808; border: 1px solid #103310; border-top: 2px solid #00dd55; }
 
 .ctitle {
-  font-size: 0.9em; letter-spacing: 2px;
-  text-transform: uppercase; color: #4488bb;
+  font-size: 1.1em; letter-spacing: 2px;
+  text-transform: uppercase; color: #55aadd;
   margin-bottom: 5px; font-family: 'Courier New', monospace;
   font-weight: bold;
 }
 
 /* ===== BIG VALUE ===== */
 .val {
-  font-size: 3.0em; font-weight: bold;
+  font-size: 3.4em; font-weight: bold;
   font-family: 'Courier New', monospace;
   line-height: 1.0; letter-spacing: 1px;
 }
 .val-md {
-  font-size: 2.0em; font-weight: bold;
+  font-size: 3.4em; font-weight: bold;
   font-family: 'Courier New', monospace;
   line-height: 1.0;
 }
 .val-sm {
-  font-size: 1.5em; font-weight: bold;
+  font-size: 2.2em; font-weight: bold;
   font-family: 'Courier New', monospace;
   line-height: 1.0;
 }
@@ -171,7 +171,7 @@ html, body {
 #w-icon { font-size: 2.0em; min-width: 36px; text-align: center; }
 #w-desc { font-size: 1.3em; font-weight: bold; color: #aaffaa; }
 #w-hlaska { font-size: 0.9em; color: #ffcc00; font-style: italic; margin-top: 3px; }
-#w-temp { font-size: 2.8em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; white-space: nowrap; }
+#w-temp { font-size: 3.4em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; white-space: nowrap; }
 
 /* ===== BLESKY - 3 boxy ===== */
 .lbox {
@@ -205,13 +205,11 @@ html, body {
 
   <!-- HEADER -->
   <div id="header">
-    <div>
-      <div id="clock">00:00:00</div>
-      <div id="date-str">...</div>
-    </div>
-    <div id="center-hdr">
-      <div>DOMACI PANEL</div>
-      <div>PALKOVICE</div>
+    <div style="-webkit-flex:1;flex:1;">
+      <div style="display:-webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:baseline;align-items:baseline;">
+        <div id="clock">00:00:00</div>
+        <div id="date-str" style="margin-left:14px;">...</div>
+      </div>
     </div>
     <div id="greeting">Ahoj Janicko!</div>
     <button id="btn-fs" onclick="goFS()">[ FS ]</button>
