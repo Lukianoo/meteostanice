@@ -67,6 +67,41 @@ html, body {
   text-align: right; white-space: nowrap;
 }
 
+/* ===== ČERNÁ OBRAZOVKA - šetření energie ===== */
+#blackout {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #000000;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+#blackout-hint {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: #111111;
+  font-size: 0.8em;
+  font-family: 'Courier New', monospace;
+}
+
+/* Skrytý canvas a video pro detekci pohybu */
+#motion-video  { position: fixed; top: -9999px; left: -9999px; width: 80px; height: 60px; }
+#motion-canvas { position: fixed; top: -9999px; left: -9999px; width: 80px; height: 60px; }
+
+/* Indikátor pohybu v headeru */
+#motion-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background-color: #113322;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+
 #btn-fs {
   background-color: #0a2a40;
   border: 1px solid #1a5577;
@@ -78,8 +113,6 @@ html, body {
   margin-left: 8px;
   white-space: nowrap;
 }
-
-/* ===== MAIN GRID ===== */
 /* 3 radky x 2 sloupce */
 #grid {
   display: -webkit-box; display: -webkit-flex; display: flex;
@@ -207,6 +240,15 @@ html, body {
 </style>
 </head>
 <body>
+<!-- Černá obrazovka -->
+<div id="blackout" onclick="wakeUp()">
+  <div id="blackout-hint">dotkni se pro probuzení</div>
+</div>
+
+<!-- Skrytý video + canvas pro detekci pohybu -->
+<video id="motion-video" autoplay muted playsinline></video>
+<canvas id="motion-canvas"></canvas>
+
 <div id="app">
 
   <!-- HEADER -->
@@ -218,6 +260,7 @@ html, body {
       </div>
     </div>
     <div id="greeting">Ahoj Janicko!</div>
+    <span id="motion-dot" title="detekce pohybu"></span>
     <button id="btn-fs" onclick="goFS()">[ FS ]</button>
   </div>
 
@@ -353,11 +396,147 @@ function px(t) { return PROXY + '?url=' + encodeURIComponent(t); }
 // Fullscreen
 function goFS() {
   var el = document.documentElement;
-  if (el.requestFullscreen)       { el.requestFullscreen(); }
+  if (el.requestFullscreen)            { el.requestFullscreen(); }
   else if (el.mozRequestFullScreen)    { el.mozRequestFullScreen(); }
   else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
   else if (el.msRequestFullscreen)     { el.msRequestFullscreen(); }
 }
+
+// ============================================================
+// DETEKCE POHYBU KAMEROU
+// ============================================================
+var SLEEP_AFTER  = 60;   // sekund bez pohybu → zčernání
+var MOTION_THRESHOLD = 25; // citlivost (0-255, menší = citlivější)
+var SAMPLE_W = 80;
+var SAMPLE_H = 60;
+
+var motionVideo    = document.getElementById('motion-video');
+var motionCanvas   = document.getElementById('motion-canvas');
+var motionCtx      = motionCanvas.getContext('2d');
+var motionDot      = document.getElementById('motion-dot');
+var blackout       = document.getElementById('blackout');
+var lastMotionTime = new Date().getTime();
+var prevPixels     = null;
+var cameraOk       = false;
+var sleeping       = false;
+
+motionCanvas.width  = SAMPLE_W;
+motionCanvas.height = SAMPLE_H;
+
+function wakeUp() {
+  sleeping = false;
+  blackout.style.display = 'none';
+  lastMotionTime = new Date().getTime();
+  goFS();
+}
+
+function goSleep() {
+  if (sleeping) return;
+  sleeping = true;
+  blackout.style.display = 'block';
+  // Opust fullscreen pri spanku neni treba - blackout zakryje vse
+}
+
+function onMotionDetected() {
+  lastMotionTime = new Date().getTime();
+  motionDot.style.backgroundColor = '#00ee55';
+  if (sleeping) { wakeUp(); }
+  setTimeout(function() {
+    if (!sleeping) motionDot.style.backgroundColor = '#113322';
+  }, 500);
+}
+
+function checkMotion() {
+  if (!cameraOk || !motionVideo.videoWidth) return;
+
+  motionCtx.drawImage(motionVideo, 0, 0, SAMPLE_W, SAMPLE_H);
+  var imageData = motionCtx.getImageData(0, 0, SAMPLE_W, SAMPLE_H);
+  var pixels = imageData.data;
+
+  if (prevPixels) {
+    var diff = 0;
+    var changed = 0;
+    for (var i = 0; i < pixels.length; i += 4) {
+      var dr = Math.abs(pixels[i]   - prevPixels[i]);
+      var dg = Math.abs(pixels[i+1] - prevPixels[i+1]);
+      var db = Math.abs(pixels[i+2] - prevPixels[i+2]);
+      diff = (dr + dg + db) / 3;
+      if (diff > MOTION_THRESHOLD) changed++;
+    }
+    // Pokud se zmenilo vic nez 1% pixelu = pohyb
+    var totalPixels = SAMPLE_W * SAMPLE_H;
+    if (changed > totalPixels * 0.01) {
+      onMotionDetected();
+    }
+  }
+
+  prevPixels = new Uint8ClampedArray(pixels);
+
+  // Zkontroluj cas od posledniho pohybu
+  var now = new Date().getTime();
+  if (!sleeping && (now - lastMotionTime) > SLEEP_AFTER * 1000) {
+    goSleep();
+  }
+}
+
+function startCamera() {
+  var constraints = { video: { facingMode: 'user', width: SAMPLE_W, height: SAMPLE_H }, audio: false };
+
+  // Firefox 68 pouziva starsi API
+  var nav = navigator;
+  if (nav.mediaDevices && nav.mediaDevices.getUserMedia) {
+    nav.mediaDevices.getUserMedia(constraints)
+      .then(function(stream) {
+        motionVideo.srcObject = stream;
+        motionVideo.play();
+        cameraOk = true;
+        motionDot.style.backgroundColor = '#113322';
+        setInterval(checkMotion, 500); // kontrola 2x za sekundu
+      })
+      .catch(function(err) {
+        // Kamera nedostupna - jen timeout rezim bez kamery
+        motionDot.style.backgroundColor = '#331111';
+        startTimeoutOnly();
+      });
+  } else if (nav.getUserMedia) {
+    // Starsi API
+    nav.getUserMedia(constraints, function(stream) {
+      motionVideo.src = window.URL.createObjectURL(stream);
+      motionVideo.play();
+      cameraOk = true;
+      motionDot.style.backgroundColor = '#113322';
+      setInterval(checkMotion, 500);
+    }, function(err) {
+      motionDot.style.backgroundColor = '#331111';
+      startTimeoutOnly();
+    });
+  } else {
+    startTimeoutOnly();
+  }
+}
+
+// Záložní režim bez kamery - zhasne po X minutách, dotyk probudí
+function startTimeoutOnly() {
+  cameraOk = false;
+  setInterval(function() {
+    var now = new Date().getTime();
+    if (!sleeping && (now - lastMotionTime) > SLEEP_AFTER * 1000) {
+      goSleep();
+    }
+  }, 5000);
+  // Jakýkoli dotyk/klik probudí
+  document.addEventListener('touchstart', function() {
+    lastMotionTime = new Date().getTime();
+    if (sleeping) wakeUp();
+  });
+  document.addEventListener('click', function() {
+    lastMotionTime = new Date().getTime();
+    if (sleeping) wakeUp();
+  });
+}
+
+// Spustit kameru po načtení
+setTimeout(startCamera, 1500);
 
 // Hodiny
 var DAYS   = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
