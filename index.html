@@ -174,9 +174,9 @@ html, body {
 .sep  { width: 1px; background-color: #1a3344; margin: 0 8px; }
 
 /* ===== POCASI ===== */
-#w-icon { font-size: 2.2em; min-width: 36px; text-align: center; }
-#w-desc { font-size: 1.5em; font-weight: bold; color: #aaffaa; }
-#w-hlaska { font-size: 1.0em; color: #ffcc00; font-style: italic; margin-top: 3px; }
+#w-icon { font-size: 3.2em; min-width: 44px; text-align: center; line-height: 1; }
+#w-desc { font-size: 1.6em; font-weight: bold; color: #aaffaa; }
+#w-hlaska { font-size: 1.05em; color: #ffcc00; font-style: italic; margin-top: 4px; }
 #w-temp { font-size: 4.2em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; white-space: nowrap; }
 
 /* ===== BLESKY - 3 boxy ===== */
@@ -214,7 +214,7 @@ html, body {
     <div style="-webkit-flex:1;flex:1;">
       <div style="display:-webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:baseline;align-items:baseline;">
         <div id="clock">00:00:00</div>
-        <div id="date-str" style="margin-left:14px;">...</div>
+        <div id="date-str" style="margin-left:18px;font-size:1.25em;color:#00aacc;font-weight:bold;white-space:nowrap;">...</div>
       </div>
     </div>
     <div id="greeting">Ahoj Janicko!</div>
@@ -478,34 +478,56 @@ function loadKotelna() {
 
 // POCASI - Open-Meteo pres proxy
 var WC = {
-  0:{d:'Jasno',h:'Krasny den - vylez ven!'},
-  1:{d:'Prevazne jasno',h:'Vic slunce nez mraku!'},
-  2:{d:'Polojasno',h:'Slunce i mraky - fair play'},
-  3:{d:'Zatazeno',h:'Den jako prikryty dekou...'},
-  45:{d:'Mlha',h:'Tajemne rano v polích!'},
-  48:{d:'Ledova mlha',h:'Opatrne na ledovce!'},
-  51:{d:'Mrholeni',h:'Ani dest, ani sucho...'},
-  53:{d:'Mrholeni',h:'Destenicko by se hodilo'},
-  55:{d:'Silne mrholeni',h:'Uz je to skoro dest!'},
-  61:{d:'Slaby dest',h:'Destnik nebo hazard?'},
-  63:{d:'Dest',h:'Dnes si odpocinem doma!'},
-  65:{d:'Silny dest',h:'Archa Noemova!'},
-  71:{d:'Slaby snih',h:'Vlocky padaji!'},
-  73:{d:'Snezeni',h:'Zima v plne parade!'},
-  75:{d:'Silne snezeni',h:'Zasypava nas!'},
-  77:{d:'Kroupy',h:'Schovat auto!'},
-  80:{d:'Prehanjky',h:'Ted mokro, za chvili sucho...'},
-  81:{d:'Prehanjky',h:'Typicka moravska prehanjka'},
-  82:{d:'Silne prehanjky',h:'Pekna prcha!'},
-  85:{d:'Snehove prehanjky',h:'Snehulek by sel udelat!'},
-  95:{d:'Bourka',h:'Blesky! Schovat elektroniku!'},
-  96:{d:'Bourka s krupy',h:'Pozor - kroupy!'},
-  99:{d:'Silna bourka',h:'Zustat doma!'}
+  0: {d:'Jasno',              h:'Uzasny den - vylez ven a uzij ho!'},
+  1: {d:'Prevazne jasno',     h:'Slunce vyhrava, mraky prohravaji!'},
+  2: {d:'Polojasno',          h:'Slunce se perepe s mraky... kdo vyhrava?'},
+  3: {d:'Zatazeno',           h:'Nebe se zabalilo do sede deky.'},
+  45:{d:'Mlha',               h:'Jako v pohadce - nic neni videt!'},
+  48:{d:'Ledova mlha',        h:'Bily perina na zemi, pozor na klouzani!'},
+  51:{d:'Slabe mrholeni',     h:'Ani dest, ani sucho - typicky kompromis.'},
+  53:{d:'Mrholeni',           h:'Vlasy se krci samy od sebe...'},
+  55:{d:'Silne mrholeni',     h:'Uz to neni mrholeni, to je proste dest!'},
+  61:{d:'Slaby dest',         h:'Destnik? Risknes to, nebo nez?'},
+  63:{d:'Dest',               h:'Dobry den na knizku a horky caj!'},
+  65:{d:'Silny dest',         h:'Archa Noemova by se hodila!'},
+  71:{d:'Slabe snezeni',      h:'Prvni vlocky! Deti jdou ven, dospeli ne.'},
+  73:{d:'Snezeni',            h:'Bila perina na zahrade - snih nemilosrdne pada!'},
+  75:{d:'Silne snezeni',      h:'Lopatou muset, nebo zustat doma?'},
+  77:{d:'Kroupy',             h:'Pozor na auto - kroupy nepromijeji!'},
+  80:{d:'Prehanjky',          h:'Ted mokro, za chvili slunce - pocasi si hraje.'},
+  81:{d:'Prehanjky',          h:'Moravska prehanjka - destnik vezmeme, slunce taky.'},
+  82:{d:'Silne prehanjky',    h:'Pekna prcha! Bezte pod strechu!'},
+  85:{d:'Snehove prehanjky',  h:'Trochu snehu pro radost, trochu pro praci.'},
+  95:{d:'Bourka',             h:'Blesky ridicuji! Schovat elektroniku!'},
+  96:{d:'Bourka s krupy',     h:'Bourkove kroupy - dvojita neprijet!'},
+  99:{d:'Silna bourka',       h:'Domov nejlepe! Venku je valka zivlu.'}
 };
-var WI = {0:'(O)',1:'(o)',2:'(oO)',3:'(--)',45:'(~~)',48:'(~~)',
-  51:'(,)',53:'(,)',55:'(,,)',61:'(:)',63:'(::)',65:'(:::)',
-  71:'(*)',73:'(**)',75:'(***)',77:'(0)',80:'(,:)',81:'(,:)',
-  82:'(:,:)',85:'(*,)',95:'(!!)',96:'(!!)',99:'(!!)' };
+// Unicode ikony - Firefox 68 je zvladne
+var WI = {
+  0: '&#9728;',   // slunce
+  1: '&#9728;',   // slunce
+  2: '&#9925;',   // slunce za mrakem
+  3: '&#9729;',   // mrak
+  45:'&#127787;', // mlha
+  48:'&#127787;', // mlha
+  51:'&#127746;', // mrak s desteem
+  53:'&#127746;',
+  55:'&#127783;', // dest
+  61:'&#127783;',
+  63:'&#127783;',
+  65:'&#127783;',
+  71:'&#10052;',  // snih
+  73:'&#10052;',
+  75:'&#10052;',
+  77:'&#127784;', // kroupy
+  80:'&#127782;', // prehanjky
+  81:'&#127782;',
+  82:'&#127782;',
+  85:'&#127784;',
+  95:'&#9928;',   // bourka
+  96:'&#9928;',
+  99:'&#9928;'
+};
 
 function loadWeather() {
   var t = 'https://api.open-meteo.com/v1/forecast?latitude=49.626&longitude=18.137&current_weather=true&timezone=Europe%2FPrague&forecast_days=1';
