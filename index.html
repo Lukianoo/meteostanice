@@ -29,23 +29,29 @@ html, body {
   background-color: #081828;
   border-bottom: 3px solid #00bbee;
   border-radius: 6px 6px 0 0;
-  padding: 4px 10px;
+  padding: 3px 10px;
   margin-bottom: 4px;
-  height: 66px;
+  height: 58px;
   -webkit-box-shadow: 0 2px 10px #001830;
   box-shadow: 0 2px 10px #001830;
 }
 
 #clock {
-  font-size: 2.9em;
+  font-size: 3.2em;
   font-weight: bold;
   color: #00ddff;
   letter-spacing: 2px;
   font-family: 'Courier New', monospace;
-  min-width: 190px;
+  white-space: nowrap;
 }
 
-#date-str { font-size: 0.95em; color: #00aacc; margin-top: 2px; font-weight: bold; }
+#date-str {
+  font-size: 1.1em;
+  color: #00aacc;
+  font-weight: bold;
+  margin-left: 16px;
+  white-space: nowrap;
+}
 
 #center-hdr {
   -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
@@ -55,10 +61,10 @@ html, body {
 #center-hdr div:last-child  { font-size: 0.55em; color: #123344; letter-spacing: 2px; }
 
 #greeting {
-  font-size: 1.6em; font-weight: bold;
+  font-size: 1.9em; font-weight: bold;
   color: #ffcc00; letter-spacing: 1px;
   font-family: 'Courier New', monospace;
-  text-align: right; min-width: 210px;
+  text-align: right; white-space: nowrap;
 }
 
 #btn-fs {
@@ -95,7 +101,7 @@ html, body {
 /* ===== CARD ===== */
 .card {
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   overflow: hidden;
   margin-right: 4px;
   display: -webkit-box; display: -webkit-flex; display: flex;
@@ -112,30 +118,30 @@ html, body {
 .c-kotelna { background-color: #081808; border: 1px solid #103310; border-top: 2px solid #00dd55; }
 
 .ctitle {
-  font-size: 1.1em; letter-spacing: 2px;
+  font-size: 1.25em; letter-spacing: 2px;
   text-transform: uppercase; color: #55aadd;
-  margin-bottom: 5px; font-family: 'Courier New', monospace;
+  margin-bottom: 4px; font-family: 'Courier New', monospace;
   font-weight: bold;
 }
 
 /* ===== BIG VALUE ===== */
 .val {
-  font-size: 3.4em; font-weight: bold;
+  font-size: 4.2em; font-weight: bold;
   font-family: 'Courier New', monospace;
   line-height: 1.0; letter-spacing: 1px;
 }
 .val-md {
-  font-size: 3.4em; font-weight: bold;
+  font-size: 4.2em; font-weight: bold;
   font-family: 'Courier New', monospace;
   line-height: 1.0;
 }
 .val-sm {
-  font-size: 2.2em; font-weight: bold;
+  font-size: 2.8em; font-weight: bold;
   font-family: 'Courier New', monospace;
   line-height: 1.0;
 }
-.lbl { font-size: 0.82em; color: #4477aa; margin-top: 2px; }
-.unit { font-size: 0.48em; color: #2a6688; vertical-align: middle; }
+.lbl { font-size: 0.95em; color: #4488bb; margin-top: 1px; }
+.unit { font-size: 0.42em; color: #2a6688; vertical-align: middle; }
 
 .cyan   { color: #00ddff; }
 .gold   { color: #ffcc00; }
@@ -152,9 +158,9 @@ html, body {
   -webkit-align-items: center; align-items: center;
   margin-top: 5px;
 }
-.tbar-lbl { font-size: 0.75em; color: #336677; width: 28px; }
-.tbar-lbl-r { font-size: 0.75em; color: #336677; width: 28px; text-align: right; }
-.tbar-bg  { -webkit-flex: 1; flex: 1; height: 10px; background-color: #0a1822; border-radius: 4px; overflow: hidden; }
+.tbar-lbl { font-size: 0.88em; color: #336677; width: 30px; }
+.tbar-lbl-r { font-size: 0.88em; color: #336677; width: 30px; text-align: right; }
+.tbar-bg  { -webkit-flex: 1; flex: 1; height: 12px; background-color: #0a1822; border-radius: 4px; overflow: hidden; }
 .tbar-fill { height: 100%; border-radius: 4px; width: 2%; }
 .tf-cyan   { background-color: #0099cc; }
 .tf-gold   { background-color: #cc9900; }
@@ -168,10 +174,10 @@ html, body {
 .sep  { width: 1px; background-color: #1a3344; margin: 0 8px; }
 
 /* ===== POCASI ===== */
-#w-icon { font-size: 2.0em; min-width: 36px; text-align: center; }
-#w-desc { font-size: 1.3em; font-weight: bold; color: #aaffaa; }
-#w-hlaska { font-size: 0.9em; color: #ffcc00; font-style: italic; margin-top: 3px; }
-#w-temp { font-size: 3.4em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; white-space: nowrap; }
+#w-icon { font-size: 2.2em; min-width: 36px; text-align: center; }
+#w-desc { font-size: 1.5em; font-weight: bold; color: #aaffaa; }
+#w-hlaska { font-size: 1.0em; color: #ffcc00; font-style: italic; margin-top: 3px; }
+#w-temp { font-size: 4.2em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; white-space: nowrap; }
 
 /* ===== BLESKY - 3 boxy ===== */
 .lbox {
@@ -197,7 +203,7 @@ html, body {
 #rffill { height: 100%; background-color: #0088bb; border-radius: 2px; width: 0%; }
 
 .loading { color: #223344; font-style: italic; }
-#ld-upd { font-size: 0.72em; color: #336688; text-align: right; margin-top: 2px; }
+#ld-upd { font-size: 0.85em; color: #336688; text-align: right; margin-top: 2px; }
 </style>
 </head>
 <body>
