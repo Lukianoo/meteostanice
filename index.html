@@ -229,11 +229,11 @@ html, body {
 
       <!-- POCASI -->
       <div class="card c-weather">
-        <div class="ctitle">POCASI - PALKOVICE</div>
+        <div class="ctitle">POČASÍ – PALKOVICE</div>
         <div class="row" style="-webkit-align-items:center;align-items:center;">
           <div id="w-icon">?</div>
           <div style="margin-left:8px;">
-            <div id="w-desc">Nacitam...</div>
+            <div id="w-desc">Načítám...</div>
             <div id="w-hlaska"></div>
           </div>
           <div id="w-temp">--</div>
@@ -242,11 +242,11 @@ html, body {
 
       <!-- VENKOVNI TEPLOTA -->
       <div class="card c-outdoor">
-        <div class="ctitle">VENKOVNI TEPLOTA</div>
+        <div class="ctitle">VENKOVNÍ TEPLOTA</div>
         <div class="row" style="-webkit-align-items:center;align-items:center;">
           <div>
             <div class="val cyan" id="outdoor-temp"><span class="loading">---</span></div>
-            <div class="lbl">Namereno venku</div>
+            <div class="lbl">Naměřeno venku</div>
           </div>
           <div style="margin-left:auto;text-align:right;">
             <span class="dot dg" id="outdoor-dot"></span>
@@ -267,7 +267,7 @@ html, body {
 
       <!-- BLESKY -->
       <div class="card c-light">
-        <div class="ctitle">** BOURKOVA STANICE</div>
+        <div class="ctitle">&#9889; BOUŘKOVÁ STANICE</div>
         <div class="row grow">
           <div class="lbox">
             <div class="val-md red" id="ld-time"><span class="loading">---</span></div>
@@ -275,11 +275,11 @@ html, body {
           </div>
           <div class="lbox">
             <div class="val-md orange" id="ld-dist"><span class="loading">---</span></div>
-            <div class="lbl">km vzdalenost</div>
+            <div class="lbl">km vzdálenost</div>
           </div>
           <div class="lbox">
             <div class="val-md gold" id="ld-count"><span class="loading">---</span></div>
-            <div class="lbl">blesku/5min</div>
+            <div class="lbl">blesků/5min</div>
           </div>
         </div>
         <div id="ld-upd">Aktualizuji...</div>
@@ -288,10 +288,10 @@ html, body {
 
       <!-- SOLARNI BOJLER -->
       <div class="card c-solar">
-        <div class="ctitle">SOLARNI BOJLER</div>
+        <div class="ctitle">SOLÁRNÍ BOJLER</div>
         <div class="row grow">
           <div class="half">
-            <div class="lbl">Vystup z panelu</div>
+            <div class="lbl">Výstup z panelů</div>
             <div class="val-md orange" id="solar-panels"><span class="loading">---</span></div>
             <div class="tbar-wrap">
               <div class="tbar-lbl">0</div>
@@ -319,7 +319,7 @@ html, body {
 
       <!-- OBOJZIVELNY BOJLER -->
       <div class="card c-ambboil">
-        <div class="ctitle">OBOJZIVELNY BOJLER</div>
+        <div class="ctitle">OBOJŽIVELNÝ BOJLER</div>
         <div class="val purple" id="amb-boiler"><span class="loading">---</span></div>
         <div class="lbl">Teplota vody v bojleru</div>
         <div class="tbar-wrap">
@@ -331,7 +331,7 @@ html, body {
 
       <!-- KOTELNA -->
       <div class="card c-kotelna">
-        <div class="ctitle">KOTELNA</div>
+        <div class="ctitle">&#128293; KOTELNA</div>
         <div class="lbl">Teplota na kotli</div>
         <div class="val green" id="kotel-temp"><span class="loading">---</span></div>
         <div class="tbar-wrap">
@@ -360,8 +360,8 @@ function goFS() {
 }
 
 // Hodiny
-var DAYS   = ['Nedele','Pondeli','Utery','Streda','Ctvrtek','Patek','Sobota'];
-var MONTHS = ['ledna','unora','brezna','dubna','kvetna','cervna','cervence','srpna','zari','rijna','listopadu','prosince'];
+var DAYS   = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
+var MONTHS = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
 
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
 function updateClock() {
@@ -375,7 +375,7 @@ setInterval(updateClock, 1000);
 updateClock();
 
 // Pozdravy
-var greetings = ['Ahoj Janicko!', 'Ahoj Adelko!', 'Ahoj Majo!', 'Ahoj Luki!'];
+var greetings = ['Ahoj Janičko!', 'Ahoj Adélko!', 'Ahoj Májo!', 'Ahoj Luki!'];
 var gIdx = 0;
 var gEl  = document.getElementById('greeting');
 gEl.style.transition = 'opacity 0.6s';
@@ -478,29 +478,29 @@ function loadKotelna() {
 
 // POCASI - Open-Meteo pres proxy
 var WC = {
-  0: {d:'Jasno',              h:'Uzasny den - vylez ven a uzij ho!'},
-  1: {d:'Prevazne jasno',     h:'Slunce vyhrava, mraky prohravaji!'},
-  2: {d:'Polojasno',          h:'Slunce se perepe s mraky... kdo vyhrava?'},
-  3: {d:'Zatazeno',           h:'Nebe se zabalilo do sede deky.'},
-  45:{d:'Mlha',               h:'Jako v pohadce - nic neni videt!'},
-  48:{d:'Ledova mlha',        h:'Bily perina na zemi, pozor na klouzani!'},
-  51:{d:'Slabe mrholeni',     h:'Ani dest, ani sucho - typicky kompromis.'},
-  53:{d:'Mrholeni',           h:'Vlasy se krci samy od sebe...'},
-  55:{d:'Silne mrholeni',     h:'Uz to neni mrholeni, to je proste dest!'},
-  61:{d:'Slaby dest',         h:'Destnik? Risknes to, nebo nez?'},
-  63:{d:'Dest',               h:'Dobry den na knizku a horky caj!'},
-  65:{d:'Silny dest',         h:'Archa Noemova by se hodila!'},
-  71:{d:'Slabe snezeni',      h:'Prvni vlocky! Deti jdou ven, dospeli ne.'},
-  73:{d:'Snezeni',            h:'Bila perina na zahrade - snih nemilosrdne pada!'},
-  75:{d:'Silne snezeni',      h:'Lopatou muset, nebo zustat doma?'},
-  77:{d:'Kroupy',             h:'Pozor na auto - kroupy nepromijeji!'},
-  80:{d:'Prehanjky',          h:'Ted mokro, za chvili slunce - pocasi si hraje.'},
-  81:{d:'Prehanjky',          h:'Moravska prehanjka - destnik vezmeme, slunce taky.'},
-  82:{d:'Silne prehanjky',    h:'Pekna prcha! Bezte pod strechu!'},
-  85:{d:'Snehove prehanjky',  h:'Trochu snehu pro radost, trochu pro praci.'},
-  95:{d:'Bourka',             h:'Blesky ridicuji! Schovat elektroniku!'},
-  96:{d:'Bourka s krupy',     h:'Bourkove kroupy - dvojita neprijet!'},
-  99:{d:'Silna bourka',       h:'Domov nejlepe! Venku je valka zivlu.'}
+  0: {d:'Jasno',                h:'Úžasný den – vylez ven a užij ho!'},
+  1: {d:'Převážně jasno',       h:'Slunce vyhrává, mraky prohrávají!'},
+  2: {d:'Polojasno',            h:'Slunce se pere s mraky... kdo vyhrává?'},
+  3: {d:'Zataženo',             h:'Nebe se zabalilo do šedé deky.'},
+  45:{d:'Mlha',                 h:'Jako v pohádce – nic není vidět!'},
+  48:{d:'Ledová mlha',          h:'Bílá peřina na zemi, pozor na klouzání!'},
+  51:{d:'Slabé mrholení',       h:'Ani déšť, ani sucho – typický kompromis.'},
+  53:{d:'Mrholení',             h:'Vlasy se krčí samy od sebe...'},
+  55:{d:'Silné mrholení',       h:'Už to není mrholení, to je prostě déšť!'},
+  61:{d:'Slabý déšť',           h:'Deštník? Riskneš to, nebo ne?'},
+  63:{d:'Déšť',                 h:'Dobrý den na knížku a horký čaj!'},
+  65:{d:'Silný déšť',           h:'Archa Noemova by se hodila!'},
+  71:{d:'Slabé sněžení',        h:'První vločky! Děti jdou ven, dospělí ne.'},
+  73:{d:'Sněžení',              h:'Bílá peřina na zahradě – sníh nemilosrdně padá!'},
+  75:{d:'Silné sněžení',        h:'Lopatou muset, nebo zůstat doma?'},
+  77:{d:'Kroupy',               h:'Pozor na auto – kroupy nepromiňují!'},
+  80:{d:'Přeháňky',             h:'Teď mokro, za chvíli slunce – počasí si hraje.'},
+  81:{d:'Přeháňky',             h:'Moravská přeháňka – deštník vezmeme, slunce taky.'},
+  82:{d:'Silné přeháňky',       h:'Pěkná prcha! Běžte pod střechu!'},
+  85:{d:'Sněhové přeháňky',     h:'Trochu sněhu pro radost, trochu pro práci.'},
+  95:{d:'Bouřka',               h:'Blesky řídičují! Schovat elektroniku!'},
+  96:{d:'Bouřka s kroupami',    h:'Bouřkové kroupy – dvojitá nepříjemnost!'},
+  99:{d:'Silná bouřka',         h:'Doma nejlépe! Venku je válka živlů.'}
 };
 // Unicode ikony - Firefox 68 je zvladne
 var WI = {
