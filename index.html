@@ -61,7 +61,7 @@ html, body {
 #center-hdr div:last-child  { font-size: 0.55em; color: #123344; letter-spacing: 2px; }
 
 #greeting {
-  font-size: 1.9em; font-weight: bold;
+  font-size: 1.5em; font-weight: bold;
   color: #ffcc00; letter-spacing: 1px;
   font-family: 'Courier New', monospace;
   text-align: right; white-space: nowrap;
@@ -553,21 +553,77 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Pozdravy
-var greetings = ['Ahoj Janičko!', 'Ahoj Adélko!', 'Ahoj Májo!', 'Ahoj Luki!'];
-var gIdx = 0;
-var gEl  = document.getElementById('greeting');
-gEl.style.transition = 'opacity 0.6s';
-gEl.style['-webkit-transition'] = 'opacity 0.6s';
-function rotateGreeting() {
-  gEl.style.opacity = '0';
-  setTimeout(function() {
-    gIdx = (gIdx + 1) % greetings.length;
-    gEl.innerHTML = greetings[gIdx];
-    gEl.style.opacity = '1';
-  }, 650);
+// Svátek - český kalendář
+var SVATKY = [
+  // Leden
+  ['Nový rok','Karina','Radmila','Diana','Dalibor','Tři králové','Vilma','Čestmír','Vladan','Česlava',
+   'Bohdana','Pravoslav','Edita','Radovan','Alice','Ctirad','Drahoslav','Vladislav','Doubravka','Ilona',
+   'Běla','Slavomír','Zdeněk','Milena','Miloš','Zora','Ingrid','Otýlie','Zdislava','Robin','Marika'],
+  // Únor
+  ['Hynek','Nela','Blažej','Jarmila','Dobromila','Vanda','Veronika','Milada','Apolena','Mojmír',
+   'Božena','Slavěna','Věnceslava','Valentýn','Jiřina','Ljuba','Miloslava','Gizela','Patrik','Oldřich',
+   'Lenka','Petr','Romana','Matěj','Liliana','Dorota','Alexandr','Lumír',''],
+  // Březen
+  ['Bedřich','Anežka','Kamil','Stela','Kazimír','Miroslav','Tomáš','Gabriela','Františka','Viktorie',
+   'Anděla','Řehoř','Růžena','Rút','Ida','Vladěna','Vlastimil','Eduard','Josef','Světlana',
+   'Radek','Leona','Ivona','Gabriel','Marián','Emanuel','Dita','Soňa','Taťána','Arnošt','Kvido'],
+  // Duben
+  ['Hugo','Erika','Richard','Ivana','Miroslava','Vendula','Heřman','Ema','Dušan','Dáša',
+   'Izabela','Julius','Aleš','Vincenc','Anastázie','Irena','Rudolf','Valérie','Rostislav','Marcela',
+   'Alexandra','Evženie','Vojtěch','Jiří','Marek','Oto','Jaroslav','Vlastislav','Robert','Blahoslav',''],
+  // Květen
+  ['Svátek práce','Zikmund','Alexej','Květoslav','Klára','Radoslav','Stanislav','Den vítězství','Ctibor','Blažena',
+   'Svatava','Pankrác','Servác','Bonifác','Žofie','Přemysl','Aneta','Nataša','Ivo','Zbyšek',
+   'Monika','Emil','Vladimír','Jana','Viola','Filip','Valdemar','Vilém','Maxmilián','Ferdinand','Petronela'],
+  // Červen
+  ['Laura','Jarmil','Tamara','Dalimír','Dobroslav','Norbert','Iveta','Medard','Stanislava','Mariana',
+   'Bruno','Antonie','Antonín','Vasil','Vít','Zuzana','Adolf','Milan','Leoš','Květa',
+   'Alois','Pavla','Zdeňka','Jan','Ivan','Adriana','Ladislav','Lubomír','Petr','Pavel',''],
+  // Červenec
+  ['Jaroslava','Patricie','Radomír','Prokop','Cyril a Metoděj','Mistr Jan Hus','Bohuslava','Nora','Drahoslava','Libuše',
+   'Olga','Bořek','Markéta','Karolína','Jindřich','Luboš','Martina','Drahomíra','Čeněk','Ilja',
+   'Vítězslav','Magdaléna','Libor','Kristýna','Jakub','Anna','Věroslav','Viktor','Marta','Bořivoj','Ignác'],
+  // Srpen
+  ['Oskar','Gustav','Dobroslav','Dominik','Kristián','Oldřiška','Lada','Soběslav','Roman','Vavřinec',
+   'Zuzana','Klára','Alžběta','Alan','Hana','Jáchym','Petra','Helena','Ludvík','Bernard',
+   'Johana','Bohuslav','Sandra','Bartoloměj','Radim','Luděk','Otakar','Augustýn','Evelína','Vladěna','Nora'],
+  // Září
+  ['Linda','Adéla','Bronislav','Jindřiška','Boris','Boleslav','Regína','Mariana','Daniela','Irma',
+   'Denisa','Marie','Lubor','Radka','Jolana','Ludmila','Naděžda','Kryštof','Zita','Oleg',
+   'Matouš','Darina','Bořislav','Jaromír','Zlata','Andrea','Jonáš','Václav','Michal','Jeroným',''],
+  // Říjen
+  ['Igor','Olívie','Bohumil','František','Eliška','Hanuš','Justýna','Věra','Štefan','Marina',
+   'Andrej','Marcel','Renáta','Agáta','Tereza','Havel','Hedvika','Lukáš','Michaela','Vendelín',
+   'Brigita','Sabina','Teodor','Nina','Beáta','Erik','Šarlota','Den vzniku ČSR','Silvie','Tadeáš','Štěpánka'],
+  // Listopad
+  ['Felix','Dušičky','Hubert','Karel','Miriam','Liběna','Saskie','Bohumír','Bohdan','Evžen',
+   'Martin','Benedikt','Tibor','Sáva','Leopold','Otmar','Mahulena','Romana','Alžběta','Nikola',
+   'Albert','Cecílie','Klement','Emílie','Kateřina','Artur','Xenie','René','Zina','Ondřej',''],
+  // Prosinec
+  ['Iva','Blanka','Svatoslav','Barbora','Jitka','Mikuláš','Ambrož','Marta','Judita','Julie',
+   'Dana','Simona','Lucie','Lýdie','Radana','Albína','Daniel','Miloslav','Ester','Dagmar',
+   'Natálie','Štefan','Vlasta','Adam a Eva','Boží hod vánoční','Štěpán','Žaneta','Bohumila','Judita','David','Silvester']
+];
+
+function getSvatek() {
+  var now   = new Date();
+  var month = now.getMonth();      // 0-11
+  var day   = now.getDate() - 1;  // 0-30
+  var svarek = SVATKY[month] ? SVATKY[month][day] : '';
+  return svarek || '';
 }
-setInterval(rotateGreeting, 10000);
+
+function updateSvatek() {
+  var s = getSvatek();
+  var el = document.getElementById('greeting');
+  if (s) {
+    el.innerHTML = '&#127873; Svátek: <span style="color:#00ddff;">' + s + '</span>';
+  } else {
+    el.innerHTML = '';
+  }
+}
+
+updateSvatek();
 
 // Helpers
 function setEl(id, html) { var e = document.getElementById(id); if (e) e.innerHTML = html; }
