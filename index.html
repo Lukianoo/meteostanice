@@ -625,6 +625,16 @@ function updateSvatek() {
 
 updateSvatek();
 
+// Kontrola každou minutu - když se změní den, aktualizuje svátek
+var lastDay = new Date().getDate();
+setInterval(function() {
+  var dnes = new Date().getDate();
+  if (dnes !== lastDay) {
+    lastDay = dnes;
+    updateSvatek();
+  }
+}, 60000);
+
 // Helpers
 function setEl(id, html) { var e = document.getElementById(id); if (e) e.innerHTML = html; }
 function setW(id, w)     { var e = document.getElementById(id); if (e) e.style.width = w; }
