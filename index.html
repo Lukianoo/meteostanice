@@ -3,71 +3,231 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Domaci panel</title>
+<title>Domácí panel</title>
 <style>
-* { -webkit-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   width: 100%; height: 100%;
-  background-color: #04080f;
-  color: #d0eeff;
-  font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
+  background-color: #050a12;
+}
+/* 1rem = 16px při výšce 768px, vše se škáluje podle displeje */
+html { font-size: 2.083vmin; }
+
+body {
+  font-family: Roboto, "Droid Sans", Arial, Helvetica, sans-serif;
+  color: #dbeafe;
+  background: linear-gradient(180deg, #08121f 0%, #050a12 100%);
 }
 
 #app {
-  display: -webkit-box; display: -webkit-flex; display: flex;
-  -webkit-flex-direction: column; flex-direction: column;
-  height: 100%; padding: 4px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: .4rem;
 }
 
-/* ===== HEADER ===== */
+/* ================= HLAVIČKA ================= */
 #header {
-  display: -webkit-box; display: -webkit-flex; display: flex;
-  -webkit-flex-direction: row; flex-direction: row;
-  -webkit-align-items: center; align-items: center;
-  background-color: #081828;
-  border-bottom: 3px solid #00bbee;
-  border-radius: 6px 6px 0 0;
-  padding: 3px 10px;
-  margin-bottom: 4px;
-  height: 58px;
-  -webkit-box-shadow: 0 2px 10px #001830;
-  box-shadow: 0 2px 10px #001830;
+  position: relative;
+  flex: 0 0 4.6rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-radius: .8rem;
+  background: linear-gradient(90deg, #10233b 0%, #0a1626 100%);
+  border: 1px solid #1d3552;
+  overflow: hidden;
 }
 
 #clock {
-  font-size: 3.2em;
+  font-family: "Droid Sans Mono", "Courier New", monospace;
   font-weight: bold;
-  color: #00ddff;
-  letter-spacing: 2px;
-  font-family: 'Courier New', monospace;
+  font-size: 3.1rem;
+  line-height: 1;
+  letter-spacing: .05em;
+  color: #35e0ff;
+  text-shadow: 0 0 .5rem rgba(53, 224, 255, .4);
   white-space: nowrap;
 }
 
-#date-str {
-  font-size: 1.1em;
-  color: #00aacc;
-  font-weight: bold;
-  margin-left: 16px;
-  white-space: nowrap;
+#dateblk { margin-left: 1.5rem; line-height: 1.15; white-space: nowrap; }
+#dn-day  { font-size: 1.55rem; font-weight: bold; color: #eaf5ff; }
+#dn-date { font-size: 1.15rem; color: #7fa6c9; }
+
+#nameday { margin-left: auto; text-align: right; line-height: 1.1; white-space: nowrap; }
+#sv-label { font-size: .85rem; letter-spacing: .2em; text-transform: uppercase; color: #6f93b8; }
+#sv-name  { font-size: 2rem; font-weight: bold; color: #ffd24a; }
+
+#hdr-ctl { margin-left: 1.2rem; display: flex; align-items: center; }
+#motion-dot {
+  display: inline-block;
+  width: .7rem; height: .7rem;
+  border-radius: 50%;
+  background-color: #113322;
+  margin-right: .6rem;
+}
+#btn-fs {
+  background-color: #0d2238;
+  border: 1px solid #2a5075;
+  border-radius: .4rem;
+  color: #6fb8e6;
+  font-size: .85rem;
+  padding: .3rem .6rem;
 }
 
-#center-hdr {
-  -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
+#rfwrap { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background-color: #12304a; }
+#rf { height: 100%; width: 0%; background-color: #35e0ff; }
+
+/* ================= ROZLOŽENÍ ================= */
+#main { flex: 1; display: flex; min-height: 0; margin-top: .4rem; }
+#colL { flex: 1.08; display: flex; flex-direction: column; min-width: 0; margin-right: .4rem; }
+#colR { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+.card {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  margin-bottom: .4rem;
+  padding: .65rem .9rem .6rem 1.3rem;
+  border-radius: .8rem;
+  background: linear-gradient(160deg, #122238 0%, #0a1524 100%);
+  border: 1px solid #1b3350;
+  display: flex;
+  flex-direction: column;
+}
+.card:last-child { margin-bottom: 0; }
+.card:before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: .35rem; }
+
+.a-blue:before   { background-color: #5aa9ff; }
+.a-cyan:before   { background-color: #29d3ff; }
+.a-gold:before   { background-color: #ffc933; }
+.a-purple:before { background-color: #c98bff; }
+.a-green:before  { background-color: #4be37e; }
+
+.f-fc  { flex-grow: 1.75; }
+.f-out { flex-grow: 1; }
+.f-sol { flex-grow: 1.1; }
+
+.ctitle {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #86bdea;
+  margin-bottom: .3rem;
+  white-space: nowrap;
+}
+.ctitle .tr {
+  margin-left: auto;
+  font-size: .85rem;
+  font-weight: normal;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #6f93b8;
+}
+
+/* ================= HODNOTY ================= */
+.val { font-size: 4.6rem; font-weight: bold; line-height: 1; white-space: nowrap; }
+.unit { font-size: .42em; font-weight: normal; color: #6f93b8; margin-left: .12em; }
+.lbl { font-size: 1.05rem; color: #86acd0; }
+
+.c-cyan   { color: #35e0ff; }
+.c-orange { color: #ffa53a; }
+.c-gold   { color: #ffd24a; }
+.c-purple { color: #cf9aff; }
+.c-green  { color: #5cea8b; }
+
+.body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.body2 { flex: 1; display: flex; align-items: center; justify-content: space-between; }
+.row2 { flex: 1; display: flex; min-height: 0; }
+.half { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.sep { width: 1px; background-color: #21405f; margin: .2rem .9rem; }
+
+/* ================= TEPLOTNÍ LIŠTA ================= */
+.bar {
+  position: relative;
+  height: .95rem;
+  border-radius: .5rem;
+  overflow: hidden;
+  background: linear-gradient(90deg, #2d8cff 0%, #27d3c0 30%, #7ed957 50%, #ffc933 72%, #ff5a3c 100%);
+}
+.bar-mask {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 100%;
+  background-color: #0a1320;
+  border-left: 2px solid #eaf4ff;
+}
+.scale { display: flex; justify-content: space-between; font-size: .8rem; color: #56799b; margin-top: .15rem; }
+
+/* ================= STAV DAT ================= */
+.dot { display: inline-block; width: .7rem; height: .7rem; border-radius: 50%; margin-right: .4rem; }
+.dg { background-color: #00ee66; }
+.dy { background-color: #ffcc00; }
+.dr { background-color: #ff3355; }
+
+/* ================= VENKOVNÍ TEPLOTA ================= */
+.mm { text-align: right; line-height: 1.25; }
+.mm-l { font-size: .95rem; color: #6f93b8; text-transform: uppercase; letter-spacing: .12em; }
+.mm .up, .mm .dn { font-size: 1.7rem; font-weight: bold; }
+.mm .up { color: #ff9f5a; }
+.mm .dn { color: #6ec6ff; }
+
+/* ================= PŘEDPOVĚĎ ================= */
+#fc-days { flex: 1; display: flex; min-height: 0; }
+.fc-wait { margin: auto; color: #6f93b8; font-size: 1.2rem; }
+
+.fc-day {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: .4rem;
+  padding: .45rem .2rem;
+  border-radius: .65rem;
+  background-color: #0d1a2a;
+  border: 1px solid #17304a;
+}
+.fc-day:last-child { margin-right: 0; }
+.fc-today { background-color: #14324d; border-color: #2d6f9c; }
+
+.fc-name { font-size: 1.2rem; font-weight: bold; color: #eaf5ff; text-transform: uppercase; letter-spacing: .06em; }
+.fc-ico  { width: 5.6rem; height: 5.6rem; }
+.fc-ico svg { display: block; width: 100%; height: 100%; }
+.fc-desc {
+  height: 2.4rem;
+  display: flex; align-items: center; justify-content: center;
   text-align: center;
+  font-size: .98rem; line-height: 1.12;
+  color: #a5c8ea;
 }
-#center-hdr div:first-child { font-size: 0.62em; letter-spacing: 3px; color: #1a5577; font-family: 'Courier New', monospace; }
-#center-hdr div:last-child  { font-size: 0.55em; color: #123344; letter-spacing: 2px; }
+.fc-max { font-size: 2.8rem; font-weight: bold; line-height: 1; color: #ff9f5a; }
+.fc-min { font-size: 1.85rem; font-weight: bold; line-height: 1; color: #6ec6ff; }
+.fc-rain { display: flex; align-items: center; font-size: 1.1rem; color: #8fd0ff; }
+.fc-rain svg { width: 1rem; height: 1rem; margin-right: .3rem; }
 
-#greeting {
-  font-size: 1.5em; font-weight: bold;
-  color: #ffcc00; letter-spacing: 1px;
-  font-family: 'Courier New', monospace;
-  text-align: right; white-space: nowrap;
+#fc-tip {
+  margin-top: .4rem;
+  padding: .35rem .7rem;
+  border-radius: .5rem;
+  background-color: #2a2410;
+  border: 1px solid #5a4a14;
+  color: #ffd24a;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  text-align: center;
+  min-height: 2.2rem;
 }
 
-/* ===== ČERNÁ OBRAZOVKA - šetření energie ===== */
+/* ================= ČERNÁ OBRAZOVKA / DETEKCE POHYBU ================= */
 #blackout {
   display: none;
   position: fixed;
@@ -76,322 +236,143 @@ html, body {
   z-index: 9999;
   cursor: pointer;
 }
-
 #blackout-hint {
   position: absolute;
   bottom: 20px;
   width: 100%;
   text-align: center;
   color: #111111;
-  font-size: 0.8em;
-  font-family: 'Courier New', monospace;
+  font-size: .8rem;
 }
-
-/* Skrytý canvas a video pro detekci pohybu */
 #motion-video  { position: fixed; top: -9999px; left: -9999px; width: 80px; height: 60px; }
 #motion-canvas { position: fixed; top: -9999px; left: -9999px; width: 80px; height: 60px; }
-
-/* Indikátor pohybu v headeru */
-#motion-dot {
-  display: inline-block;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background-color: #113322;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-
-
-#btn-fs {
-  background-color: #0a2a40;
-  border: 1px solid #1a5577;
-  border-radius: 4px;
-  color: #3399bb;
-  font-size: 0.65em;
-  padding: 3px 7px;
-  cursor: pointer;
-  margin-left: 8px;
-  white-space: nowrap;
-}
-/* 3 radky x 2 sloupce */
-#grid {
-  display: -webkit-box; display: -webkit-flex; display: flex;
-  -webkit-flex-direction: column; flex-direction: column;
-  -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
-  overflow: hidden;
-}
-
-.grow { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
-
-.hrow {
-  display: -webkit-box; display: -webkit-flex; display: flex;
-  -webkit-flex-direction: row; flex-direction: row;
-  -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
-  margin-bottom: 4px;
-}
-.hrow:last-child { margin-bottom: 0; }
-
-/* ===== CARD ===== */
-.card {
-  border-radius: 6px;
-  padding: 8px 12px;
-  overflow: hidden;
-  margin-right: 4px;
-  display: -webkit-box; display: -webkit-flex; display: flex;
-  -webkit-flex-direction: column; flex-direction: column;
-  -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
-}
-.card:last-child { margin-right: 0; }
-
-.c-weather { background-color: #0b1f0c; border: 1px solid #1f4a20; border-top: 2px solid #66cc00; }
-.c-outdoor { background-color: #071625; border: 1px solid #123355; border-top: 2px solid #00bbee; }
-.c-light   { background-color: #180808; border: 1px solid #3f1010; border-top: 2px solid #ff2233; }
-.c-solar   { background-color: #180f00; border: 1px solid #3f2a00; border-top: 2px solid #ffaa00; }
-.c-ambboil { background-color: #100818; border: 1px solid #2f1040; border-top: 2px solid #bb33ff; }
-.c-kotelna { background-color: #081808; border: 1px solid #103310; border-top: 2px solid #00dd55; }
-
-.ctitle {
-  font-size: 1.25em; letter-spacing: 2px;
-  text-transform: uppercase; color: #55aadd;
-  margin-bottom: 4px; font-family: 'Courier New', monospace;
-  font-weight: bold;
-}
-
-/* ===== BIG VALUE ===== */
-.val {
-  font-size: 4.2em; font-weight: bold;
-  font-family: 'Courier New', monospace;
-  line-height: 1.0; letter-spacing: 1px;
-}
-.val-md {
-  font-size: 4.2em; font-weight: bold;
-  font-family: 'Courier New', monospace;
-  line-height: 1.0;
-}
-.val-sm {
-  font-size: 2.8em; font-weight: bold;
-  font-family: 'Courier New', monospace;
-  line-height: 1.0;
-}
-.lbl { font-size: 0.95em; color: #4488bb; margin-top: 1px; }
-.unit { font-size: 0.42em; color: #2a6688; vertical-align: middle; }
-
-.cyan   { color: #00ddff; }
-.gold   { color: #ffcc00; }
-.green  { color: #00ee55; }
-.red    { color: #ff2244; }
-.orange { color: #ffaa00; }
-.purple { color: #cc44ff; }
-.lime   { color: #88ee00; }
-
-/* ===== THERMO BAR ===== */
-.tbar-wrap {
-  display: -webkit-box; display: -webkit-flex; display: flex;
-  -webkit-flex-direction: row; flex-direction: row;
-  -webkit-align-items: center; align-items: center;
-  margin-top: 5px;
-}
-.tbar-lbl { font-size: 0.88em; color: #336677; width: 30px; }
-.tbar-lbl-r { font-size: 0.88em; color: #336677; width: 30px; text-align: right; }
-.tbar-bg  { -webkit-flex: 1; flex: 1; height: 12px; background-color: #0a1822; border-radius: 4px; overflow: hidden; }
-.tbar-fill { height: 100%; border-radius: 4px; width: 2%; }
-.tf-cyan   { background-color: #0099cc; }
-.tf-gold   { background-color: #cc9900; }
-.tf-green  { background-color: #00aa44; }
-.tf-orange { background-color: #cc7700; }
-.tf-purple { background-color: #9922cc; }
-
-/* ===== ROW FLEX ===== */
-.row  { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-flex-direction: row; flex-direction: row; }
-.half { -webkit-flex: 1; flex: 1; }
-.sep  { width: 1px; background-color: #1a3344; margin: 0 8px; }
-
-/* ===== POCASI ===== */
-#w-icon { font-size: 3.2em; min-width: 44px; text-align: center; line-height: 1; }
-#w-desc { font-size: 1.6em; font-weight: bold; color: #aaffaa; }
-#w-hlaska { font-size: 1.05em; color: #ffcc00; font-style: italic; margin-top: 4px; }
-#w-temp { font-size: 4.2em; font-weight: bold; color: #00ddff; font-family: 'Courier New', monospace; margin-left: auto; white-space: nowrap; }
-
-/* ===== BLESKY - 3 boxy ===== */
-.lbox {
-  -webkit-flex: 1; flex: 1;
-  background-color: #1e0606; border: 1px solid #3a1010;
-  border-radius: 5px; text-align: center;
-  padding: 4px 2px; margin-right: 3px;
-  display: -webkit-box; display: -webkit-flex; display: flex;
-  -webkit-flex-direction: column; flex-direction: column;
-  -webkit-align-items: center; align-items: center;
-  -webkit-justify-content: center; justify-content: center;
-}
-.lbox:last-child { margin-right: 0; }
-
-/* ===== STATUS DOT ===== */
-.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
-.dg { background-color: #00ee55; }
-.dy { background-color: #ffcc00; }
-.dr { background-color: #ff2244; }
-
-/* ===== REFRESH BAR ===== */
-#rfwrap { height: 3px; background-color: #0a1822; border-radius: 2px; overflow: hidden; margin-top: 4px; }
-#rffill { height: 100%; background-color: #0088bb; border-radius: 2px; width: 0%; }
-
-.loading { color: #223344; font-style: italic; }
-#ld-upd { font-size: 0.85em; color: #336688; text-align: right; margin-top: 2px; }
 </style>
 </head>
 <body>
-<!-- Černá obrazovka -->
+
 <div id="blackout" onclick="wakeUp()">
   <div id="blackout-hint">dotkni se pro probuzení</div>
 </div>
-
-<!-- Skrytý video + canvas pro detekci pohybu -->
 <video id="motion-video" autoplay muted playsinline></video>
 <canvas id="motion-canvas"></canvas>
 
 <div id="app">
 
-  <!-- HEADER -->
+  <!-- HLAVIČKA -->
   <div id="header">
-    <div style="-webkit-flex:1;flex:1;">
-      <div style="display:-webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:baseline;align-items:baseline;">
-        <div id="clock">00:00:00</div>
-        <div id="date-str" style="margin-left:18px;font-size:1.25em;color:#00aacc;font-weight:bold;white-space:nowrap;">...</div>
-      </div>
+    <div id="clock">00:00:00</div>
+    <div id="dateblk">
+      <div id="dn-day">&nbsp;</div>
+      <div id="dn-date">&nbsp;</div>
     </div>
-    <div id="greeting">Ahoj Janicko!</div>
-    <span id="motion-dot" title="detekce pohybu"></span>
-    <button id="btn-fs" onclick="goFS()">[ FS ]</button>
+    <div id="nameday">
+      <div id="sv-label">Svátek má</div>
+      <div id="sv-name">&nbsp;</div>
+    </div>
+    <div id="hdr-ctl">
+      <span id="motion-dot" title="detekce pohybu"></span>
+      <button id="btn-fs" onclick="goFS()">FS</button>
+    </div>
+    <div id="rfwrap"><div id="rf"></div></div>
   </div>
 
-  <!-- GRID -->
-  <div id="grid">
+  <div id="main">
 
-    <!-- RADEK 1: Počasí + Venkovní teplota -->
-    <div class="hrow">
+    <!-- LEVÝ SLOUPEC -->
+    <div id="colL">
 
-      <!-- POCASI -->
-      <div class="card c-weather">
-        <div class="ctitle">POČASÍ – PALKOVICE</div>
-        <div class="row" style="-webkit-align-items:center;align-items:center;">
-          <div id="w-icon">?</div>
-          <div style="margin-left:8px;">
-            <div id="w-desc">Načítám...</div>
-            <div id="w-hlaska"></div>
-          </div>
-          <div id="w-temp">--</div>
-        </div>
+      <div class="card a-blue f-fc">
+        <div class="ctitle">Předpověď &middot; Palkovice <span class="tr" id="fc-upd"></span></div>
+        <div id="fc-days"><div class="fc-wait">Načítám předpověď…</div></div>
+        <div id="fc-tip"></div>
       </div>
 
-      <!-- VENKOVNI TEPLOTA -->
-      <div class="card c-outdoor">
-        <div class="ctitle">VENKOVNÍ TEPLOTA</div>
-        <div class="row" style="-webkit-align-items:center;align-items:center;">
-          <div>
-            <div class="val cyan" id="outdoor-temp"><span class="loading">---</span></div>
-            <div class="lbl">Naměřeno venku</div>
-          </div>
-          <div style="margin-left:auto;text-align:right;">
-            <span class="dot dg" id="outdoor-dot"></span>
-            <span style="font-size:0.7em;color:#335566;" id="outdoor-age">--</span>
-          </div>
+      <div class="card a-cyan f-out">
+        <div class="ctitle">Venkovní teplota
+          <span class="tr"><span class="dot dg" id="out-dot"></span><span id="out-age">--</span></span>
         </div>
-        <div class="tbar-wrap">
-          <div class="tbar-lbl">-20</div>
-          <div class="tbar-bg"><div class="tbar-fill tf-cyan" id="outdoor-bar"></div></div>
-          <div class="tbar-lbl-r">+40</div>
+        <div class="body2">
+          <div>
+            <div class="lbl">Naměřeno venku</div>
+            <div class="val c-cyan" id="out-val">---</div>
+          </div>
+          <div class="mm" id="out-mm"></div>
+        </div>
+        <div>
+          <div class="bar"><div class="bar-mask" id="out-bar"></div></div>
+          <div class="scale"><span>-20°</span><span>+40°</span></div>
         </div>
       </div>
 
     </div>
 
-    <!-- RADEK 2: Blesky + Solární bojler -->
-    <div class="hrow">
+    <!-- PRAVÝ SLOUPEC -->
+    <div id="colR">
 
-      <!-- BLESKY -->
-      <div class="card c-light">
-        <div class="ctitle">&#9889; BOUŘKOVÁ STANICE</div>
-        <div class="row grow">
-          <div class="lbox">
-            <div class="val-md red" id="ld-time"><span class="loading">---</span></div>
-            <div class="lbl">min od blesku</div>
-          </div>
-          <div class="lbox">
-            <div class="val-md orange" id="ld-dist"><span class="loading">---</span></div>
-            <div class="lbl">km vzdálenost</div>
-          </div>
-          <div class="lbox">
-            <div class="val-md gold" id="ld-count"><span class="loading">---</span></div>
-            <div class="lbl">blesků/5min</div>
-          </div>
+      <div class="card a-gold f-sol">
+        <div class="ctitle">Solární bojler
+          <span class="tr"><span class="dot dg" id="sol-dot"></span><span id="sol-age">--</span></span>
         </div>
-        <div id="ld-upd">Aktualizuji...</div>
-        <div id="rfwrap"><div id="rffill"></div></div>
-      </div>
-
-      <!-- SOLARNI BOJLER -->
-      <div class="card c-solar">
-        <div class="ctitle">SOLÁRNÍ BOJLER</div>
-        <div class="row grow">
+        <div class="row2">
           <div class="half">
-            <div class="lbl">Výstup z panelů</div>
-            <div class="val-md orange" id="solar-panels"><span class="loading">---</span></div>
-            <div class="tbar-wrap">
-              <div class="tbar-lbl">0</div>
-              <div class="tbar-bg"><div class="tbar-fill tf-orange" id="solar-panels-bar"></div></div>
-              <div class="tbar-lbl-r">120</div>
+            <div class="body">
+              <div class="lbl">Výstup z panelů</div>
+              <div class="val c-orange" id="sol-p">---</div>
+            </div>
+            <div>
+              <div class="bar"><div class="bar-mask" id="sol-p-bar"></div></div>
+              <div class="scale"><span>0°</span><span>120°</span></div>
             </div>
           </div>
           <div class="sep"></div>
           <div class="half">
-            <div class="lbl">Bojler</div>
-            <div class="val-md gold" id="solar-boiler"><span class="loading">---</span></div>
-            <div class="tbar-wrap">
-              <div class="tbar-lbl">0</div>
-              <div class="tbar-bg"><div class="tbar-fill tf-gold" id="solar-boiler-bar"></div></div>
-              <div class="tbar-lbl-r">100</div>
+            <div class="body">
+              <div class="lbl">Bojler</div>
+              <div class="val c-gold" id="sol-b">---</div>
+            </div>
+            <div>
+              <div class="bar"><div class="bar-mask" id="sol-b-bar"></div></div>
+              <div class="scale"><span>0°</span><span>100°</span></div>
             </div>
           </div>
         </div>
       </div>
 
-    </div>
-
-    <!-- RADEK 3: Obojzivelny bojler + Kotelna -->
-    <div class="hrow">
-
-      <!-- OBOJZIVELNY BOJLER -->
-      <div class="card c-ambboil">
-        <div class="ctitle">OBOJŽIVELNÝ BOJLER</div>
-        <div class="val purple" id="amb-boiler"><span class="loading">---</span></div>
-        <div class="lbl">Teplota vody v bojleru</div>
-        <div class="tbar-wrap">
-          <div class="tbar-lbl">0</div>
-          <div class="tbar-bg"><div class="tbar-fill tf-purple" id="amb-boiler-bar"></div></div>
-          <div class="tbar-lbl-r">90</div>
+      <div class="card a-purple">
+        <div class="ctitle">Obojživelný bojler</div>
+        <div class="body">
+          <div class="lbl">Teplota vody v bojleru</div>
+          <div class="val c-purple" id="amb-val">---</div>
+        </div>
+        <div>
+          <div class="bar"><div class="bar-mask" id="amb-bar"></div></div>
+          <div class="scale"><span>0°</span><span>90°</span></div>
         </div>
       </div>
 
-      <!-- KOTELNA -->
-      <div class="card c-kotelna">
-        <div class="ctitle">&#128293; KOTELNA</div>
-        <div class="lbl">Teplota na kotli</div>
-        <div class="val green" id="kotel-temp"><span class="loading">---</span></div>
-        <div class="tbar-wrap">
-          <div class="tbar-lbl">0</div>
-          <div class="tbar-bg"><div class="tbar-fill tf-green" id="kotel-bar"></div></div>
-          <div class="tbar-lbl-r">90</div>
+      <div class="card a-green">
+        <div class="ctitle">Kotelna</div>
+        <div class="body">
+          <div class="lbl">Teplota na kotli</div>
+          <div class="val c-green" id="kot-val">---</div>
+        </div>
+        <div>
+          <div class="bar"><div class="bar-mask" id="kot-bar"></div></div>
+          <div class="scale"><span>0°</span><span>90°</span></div>
         </div>
       </div>
 
     </div>
-
-  </div><!-- /grid -->
-</div><!-- /app -->
+  </div>
+</div>
 
 <script>
 var PROXY = 'https://fragrant-haze-560fproxy.zachrc80.workers.dev';
 function px(t) { return PROXY + '?url=' + encodeURIComponent(t); }
+
+function setEl(id, html) { var e = document.getElementById(id); if (e) e.innerHTML = html; }
+function setW(id, w)     { var e = document.getElementById(id); if (e) e.style.width = w; }
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
 // Fullscreen
 function goFS() {
@@ -403,7 +384,7 @@ function goFS() {
 }
 
 // ============================================================
-// DETEKCE POHYBU KAMEROU
+// DETEKCE POHYBU KAMEROU (beze změny)
 // ============================================================
 var SLEEP_AFTER  = 60;   // sekund bez pohybu → zčernání
 var MOTION_THRESHOLD = 25; // citlivost (0-255, menší = citlivější)
@@ -538,22 +519,24 @@ function startTimeoutOnly() {
 // Spustit kameru po načtení
 setTimeout(startCamera, 1500);
 
-// Hodiny
+// ============================================================
+// HODINY A DATUM
+// ============================================================
 var DAYS   = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
 var MONTHS = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
 
-function pad(n) { return n < 10 ? '0' + n : '' + n; }
 function updateClock() {
-  var now = new Date();
-  document.getElementById('clock').innerHTML =
-    pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
-  document.getElementById('date-str').innerHTML =
-    DAYS[now.getDay()] + ' ' + now.getDate() + '. ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+  var n = new Date();
+  setEl('clock', pad(n.getHours()) + ':' + pad(n.getMinutes()) + ':' + pad(n.getSeconds()));
+  setEl('dn-day', DAYS[n.getDay()]);
+  setEl('dn-date', n.getDate() + '. ' + MONTHS[n.getMonth()] + ' ' + n.getFullYear());
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-// Svátek - český kalendář
+// ============================================================
+// SVÁTEK
+// ============================================================
 var SVATKY = [
   // Leden
   ['Nový rok','Karina','Radmila','Diana','Dalibor','Tři králové','Vilma','Čestmír','Vladan','Česlava',
@@ -604,60 +587,25 @@ var SVATKY = [
    'Dana','Simona','Lucie','Lýdie','Radana','Albína','Daniel','Miloslav','Ester','Dagmar',
    'Natálie','Štefan','Vlasta','Adam a Eva','Boží hod vánoční','Štěpán','Žaneta','Bohumila','Judita','David','Silvester']
 ];
+SVATKY[1][28] = 'Horymír';
 
-function getSvatek() {
-  var now   = new Date();
-  var month = now.getMonth();      // 0-11
-  var day   = now.getDate() - 1;  // 0-30
-  var svarek = SVATKY[month] ? SVATKY[month][day] : '';
-  return svarek || '';
-}
+var SPECIAL = {
+  'Nový rok': 1, 'Tři králové': 1, 'Svátek práce': 1, 'Den vítězství': 1,
+  'Cyril a Metoděj': 1, 'Mistr Jan Hus': 1, 'Den vzniku ČSR': 1,
+  'Dušičky': 1, 'Boží hod vánoční': 1
+};
 
 function updateSvatek() {
-  var s = getSvatek();
-  var el = document.getElementById('greeting');
-  if (s) {
-    el.innerHTML = '&#127873; Svátek: <span style="color:#00ddff;">' + s + '</span>';
-  } else {
-    el.innerHTML = '';
-  }
+  var n = new Date();
+  var s = (SVATKY[n.getMonth()] || [])[n.getDate() - 1] || '';
+  setEl('sv-label', SPECIAL[s] ? 'Dnes' : 'Svátek má');
+  setEl('sv-name', s ? s : '&nbsp;');
 }
-
 updateSvatek();
 
-// Kontrola každou minutu - když se změní den, aktualizuje svátek
-var lastDay = new Date().getDate();
-setInterval(function() {
-  var dnes = new Date().getDate();
-  if (dnes !== lastDay) {
-    lastDay = dnes;
-    updateSvatek();
-  }
-}, 60000);
-
-// Helpers
-function setEl(id, html) { var e = document.getElementById(id); if (e) e.innerHTML = html; }
-function setW(id, w)     { var e = document.getElementById(id); if (e) e.style.width = w; }
-
-function fv(feeds, n) {
-  if (!feeds || !feeds.length) return null;
-  var v = feeds[0]['field' + n];
-  if (v === null || v === undefined || v === '') return null;
-  var f = parseFloat(v);
-  return isNaN(f) ? null : f;
-}
-function ft(val) {
-  if (val === null) return '---';
-  return (Math.round(val * 10) / 10) + '<span class="unit"> C</span>';
-}
-function bw(val, mn, mx) {
-  if (val === null) return '2%';
-  var p = (val - mn) / (mx - mn) * 100;
-  if (p < 2) p = 2; if (p > 100) p = 100;
-  return Math.round(p) + '%';
-}
-
-// XHR pres proxy
+// ============================================================
+// POMOCNÉ FUNKCE
+// ============================================================
 function getJSON(url, cb) {
   var done = false;
   var xhr  = new XMLHttpRequest();
@@ -677,129 +625,272 @@ function getJSON(url, cb) {
   catch(e) { clearTimeout(tmr); if (!done) { done = true; cb('open', null); } }
 }
 
-// BLESKY - kanal 3272958 | f4=vzdal, f5=min, f7=pocet
-function loadLightning() {
-  getJSON(px('https://api.thingspeak.com/channels/3272958/feeds.json?results=1'), function(err, data) {
-    if (err || !data || !data.feeds) {
-      setEl('ld-time', '!'); setEl('ld-dist', '!'); setEl('ld-count', '!');
-      setEl('ld-upd', 'Err: ' + (err || '?')); return;
-    }
-    var t = fv(data.feeds, 5), d = fv(data.feeds, 4), c = fv(data.feeds, 7);
-    setEl('ld-time',  t !== null ? Math.round(t) + '<span class="unit"> min</span>' : '---');
-    setEl('ld-dist',  d !== null ? (Math.round(d*10)/10) + '<span class="unit"> km</span>' : '---');
-    setEl('ld-count', c !== null ? '' + Math.round(c) : '---');
-    var n = new Date();
-    setEl('ld-upd', 'OK ' + pad(n.getHours()) + ':' + pad(n.getMinutes()) + ':' + pad(n.getSeconds()));
-  });
+function fv(feeds, n) {
+  if (!feeds || !feeds.length) return null;
+  var v = feeds[0]['field' + n];
+  if (v === null || v === undefined || v === '') return null;
+  var f = parseFloat(v);
+  return isNaN(f) ? null : f;
 }
 
-// SOLARNI BOJLER - kanal 33442 | f1=panely, f2=bojler
+function ft(val) {
+  if (val === null) return '---';
+  return val.toFixed(1) + '<span class="unit">°C</span>';
+}
+
+function fmtT(v) { return (v === null) ? '–' : Math.round(v) + '°'; }
+
+// maska odkrývá barevný přechod lišty podle hodnoty
+function setBar(id, val, mn, mx) {
+  var e = document.getElementById(id);
+  if (!e) return;
+  if (val === null) { e.style.width = '100%'; e.style.borderLeftWidth = '0'; return; }
+  var p = (val - mn) / (mx - mn) * 100;
+  if (p < 0) p = 0;
+  if (p > 100) p = 100;
+  e.style.width = (100 - p) + '%';
+  e.style.borderLeftWidth = '2px';
+}
+
+function setAge(dotId, txtId, created) {
+  if (!created) return;
+  var dm = Math.round((new Date().getTime() - new Date(created).getTime()) / 60000);
+  if (isNaN(dm)) return;
+  if (dm < 0) dm = 0;
+  setEl(txtId, dm < 60 ? 'před ' + dm + ' min' : 'před ' + Math.floor(dm / 60) + ' h');
+  var d = document.getElementById(dotId);
+  if (d) d.className = 'dot ' + (dm < 15 ? 'dg' : (dm < 60 ? 'dy' : 'dr'));
+}
+
+// ============================================================
+// SOLÁRNÍ BOJLER - kanál 33442 (f1 = panely, f2 = bojler)
+// ============================================================
 function loadSolar() {
   getJSON(px('https://api.thingspeak.com/channels/33442/feeds.json?results=1'), function(err, data) {
     if (err || !data || !data.feeds) return;
     var p = fv(data.feeds, 1), b = fv(data.feeds, 2);
-    setEl('solar-panels', ft(p)); setEl('solar-boiler', ft(b));
-    setW('solar-panels-bar', bw(p, 0, 120)); setW('solar-boiler-bar', bw(b, 0, 100));
+    setEl('sol-p', ft(p));
+    setEl('sol-b', ft(b));
+    setBar('sol-p-bar', p, 0, 120);
+    setBar('sol-b-bar', b, 0, 100);
+    if (data.feeds[0]) setAge('sol-dot', 'sol-age', data.feeds[0].created_at);
   });
 }
 
-// KOTELNA - kanal 231269 | f3=obojz, f4=venk, f5=kotel
+// ============================================================
+// KOTELNA - kanál 231269 (f3 = obojživelný, f4 = venku, f5 = kotel)
+// ============================================================
 function loadKotelna() {
   getJSON(px('https://api.thingspeak.com/channels/231269/feeds.json?results=1'), function(err, data) {
     if (err || !data || !data.feeds) return;
     var ab = fv(data.feeds, 3), ot = fv(data.feeds, 4), kt = fv(data.feeds, 5);
-    setEl('outdoor-temp', ft(ot)); setW('outdoor-bar', bw(ot, -20, 40));
-    setEl('amb-boiler', ft(ab));   setW('amb-boiler-bar', bw(ab, 0, 90));
-    setEl('kotel-temp', ft(kt));   setW('kotel-bar', bw(kt, 0, 90));
-    if (data.feeds[0] && data.feeds[0].created_at) {
-      var lu = new Date(data.feeds[0].created_at);
-      var dm = Math.round((new Date() - lu) / 60000);
-      setEl('outdoor-age', dm + ' min');
-      var dot = document.getElementById('outdoor-dot');
-      if (dot) dot.className = 'dot ' + (dm < 15 ? 'dg' : dm < 60 ? 'dy' : 'dr');
-    }
+    setEl('out-val', ft(ot));  setBar('out-bar', ot, -20, 40);
+    setEl('amb-val', ft(ab));  setBar('amb-bar', ab, 0, 90);
+    setEl('kot-val', ft(kt));  setBar('kot-bar', kt, 0, 90);
+    if (data.feeds[0]) setAge('out-dot', 'out-age', data.feeds[0].created_at);
   });
 }
 
-// POCASI - Open-Meteo pres proxy
-var WC = {
-  0: {d:'Jasno',                h:'Úžasný den – vylez ven a užij ho!'},
-  1: {d:'Převážně jasno',       h:'Slunce vyhrává, mraky prohrávají!'},
-  2: {d:'Polojasno',            h:'Slunce se pere s mraky... kdo vyhrává?'},
-  3: {d:'Zataženo',             h:'Nebe se zabalilo do šedé deky.'},
-  45:{d:'Mlha',                 h:'Jako v pohádce – nic není vidět!'},
-  48:{d:'Ledová mlha',          h:'Bílá peřina na zemi, pozor na klouzání!'},
-  51:{d:'Slabé mrholení',       h:'Ani déšť, ani sucho – typický kompromis.'},
-  53:{d:'Mrholení',             h:'Vlasy se krčí samy od sebe...'},
-  55:{d:'Silné mrholení',       h:'Už to není mrholení, to je prostě déšť!'},
-  61:{d:'Slabý déšť',           h:'Deštník? Riskneš to, nebo ne?'},
-  63:{d:'Déšť',                 h:'Dobrý den na knížku a horký čaj!'},
-  65:{d:'Silný déšť',           h:'Archa Noemova by se hodila!'},
-  71:{d:'Slabé sněžení',        h:'První vločky! Děti jdou ven, dospělí ne.'},
-  73:{d:'Sněžení',              h:'Bílá peřina na zahradě – sníh nemilosrdně padá!'},
-  75:{d:'Silné sněžení',        h:'Lopatou muset, nebo zůstat doma?'},
-  77:{d:'Kroupy',               h:'Pozor na auto – kroupy nepromiňují!'},
-  80:{d:'Přeháňky',             h:'Teď mokro, za chvíli slunce – počasí si hraje.'},
-  81:{d:'Přeháňky',             h:'Moravská přeháňka – deštník vezmeme, slunce taky.'},
-  82:{d:'Silné přeháňky',       h:'Pěkná prcha! Běžte pod střechu!'},
-  85:{d:'Sněhové přeháňky',     h:'Trochu sněhu pro radost, trochu pro práci.'},
-  95:{d:'Bouřka',               h:'Blesky řídičují! Schovat elektroniku!'},
-  96:{d:'Bouřka s kroupami',    h:'Bouřkové kroupy – dvojitá nepříjemnost!'},
-  99:{d:'Silná bouřka',         h:'Doma nejlépe! Venku je válka živlů.'}
-};
-// Unicode ikony - Firefox 68 je zvladne
-var WI = {
-  0: '&#9728;',   // slunce
-  1: '&#9728;',   // slunce
-  2: '&#9925;',   // slunce za mrakem
-  3: '&#9729;',   // mrak
-  45:'&#127787;', // mlha
-  48:'&#127787;', // mlha
-  51:'&#127746;', // mrak s desteem
-  53:'&#127746;',
-  55:'&#127783;', // dest
-  61:'&#127783;',
-  63:'&#127783;',
-  65:'&#127783;',
-  71:'&#10052;',  // snih
-  73:'&#10052;',
-  75:'&#10052;',
-  77:'&#127784;', // kroupy
-  80:'&#127782;', // prehanjky
-  81:'&#127782;',
-  82:'&#127782;',
-  85:'&#127784;',
-  95:'&#9928;',   // bourka
-  96:'&#9928;',
-  99:'&#9928;'
+// ============================================================
+// IKONY POČASÍ - kreslené SVG (emoji ve starém Androidu nefungují)
+// ============================================================
+function svgWrap(inner) {
+  return '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">' + inner + '</svg>';
+}
+
+function sunShape(cx, cy, r, rays) {
+  var s = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="#ffc933"/>';
+  var i, a, c, sn;
+  if (rays) {
+    for (i = 0; i < 8; i++) {
+      a = i * Math.PI / 4; c = Math.cos(a); sn = Math.sin(a);
+      s += '<line x1="' + (cx + c * (r + 4)).toFixed(1) + '" y1="' + (cy + sn * (r + 4)).toFixed(1) +
+           '" x2="' + (cx + c * (r + 9)).toFixed(1) + '" y2="' + (cy + sn * (r + 9)).toFixed(1) +
+           '" stroke="#ffc933" stroke-width="3" stroke-linecap="round"/>';
+    }
+  }
+  return s;
+}
+
+function cloudShape(tx, ty, sc, fill) {
+  return '<g transform="translate(' + tx + ' ' + ty + ') scale(' + sc + ')" fill="' + fill + '">' +
+    '<circle cx="22" cy="40" r="10"/><circle cx="35" cy="33" r="14"/><circle cx="47" cy="41" r="9"/>' +
+    '<rect x="22" y="40" width="25" height="10"/></g>';
+}
+
+function dropLines(y, color, w, n) {
+  var xs = [22, 34, 46], s = '', i;
+  for (i = 0; i < n; i++) {
+    s += '<line x1="' + xs[i] + '" y1="' + y + '" x2="' + (xs[i] - 3) + '" y2="' + (y + 8) +
+         '" stroke="' + color + '" stroke-width="' + w + '" stroke-linecap="round"/>';
+  }
+  return s;
+}
+
+function weatherSvg(kind) {
+  var s = '', i, xs;
+  if (kind === 'sun') {
+    s = sunShape(32, 32, 12, true);
+  } else if (kind === 'mostly') {
+    s = sunShape(27, 27, 10, true) + cloudShape(20, 20, 0.6, '#e6eef7');
+  } else if (kind === 'partly') {
+    s = sunShape(24, 24, 9, true) + cloudShape(6, 8, 0.85, '#d3dde9');
+  } else if (kind === 'fog') {
+    s = cloudShape(0, -8, 0.9, '#aab9ca') +
+        '<g stroke="#8fa3b8" stroke-width="3.5" stroke-linecap="round">' +
+        '<line x1="12" y1="44" x2="52" y2="44"/><line x1="16" y1="52" x2="56" y2="52"/>' +
+        '<line x1="12" y1="60" x2="44" y2="60"/></g>';
+  } else if (kind === 'drizzle') {
+    s = cloudShape(0, -6, 1, '#9fb2c7') + dropLines(48, '#6fc3ff', 2.5, 3);
+  } else if (kind === 'rain') {
+    s = cloudShape(0, -6, 1, '#8ea2b8') + dropLines(47, '#3fa9ff', 3.5, 3);
+  } else if (kind === 'showers') {
+    s = sunShape(22, 22, 8, true) + cloudShape(4, -2, 0.9, '#8ea2b8') + dropLines(46, '#3fa9ff', 3, 3);
+  } else if (kind === 'snow') {
+    s = cloudShape(0, -6, 1, '#a9b9cc');
+    xs = [[22, 49], [34, 49], [46, 49], [28, 57], [40, 57]];
+    for (i = 0; i < xs.length; i++) {
+      s += '<circle cx="' + xs[i][0] + '" cy="' + xs[i][1] + '" r="2.4" fill="#ffffff"/>';
+    }
+  } else if (kind === 'storm') {
+    s = cloudShape(0, -8, 1, '#64768d') +
+        '<polygon points="36,40 26,53 33,53 29,63 43,48 36,48 41,40" fill="#ffd24a"/>';
+  } else {
+    s = cloudShape(14, 0, 0.75, '#6f8197') + cloudShape(-4, -3, 1.05, '#b4c3d4');
+  }
+  return svgWrap(s);
+}
+
+var DROP_SVG = '<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">' +
+  '<path d="M8 1 C8 1 2 8 2 11 a6 6 0 0 0 12 0 C14 8 8 1 8 1 z" fill="#4fb3ff"/></svg>';
+
+// ============================================================
+// PŘEDPOVĚĎ NA 3 DNY - Open-Meteo (zdarma, bez klíče)
+// ============================================================
+var WK = {
+  0:  {d:'Jasno',               k:'sun',     h:'Úžasný den – vylez ven a užij ho!'},
+  1:  {d:'Převážně jasno',      k:'mostly',  h:'Slunce vyhrává, mraky prohrávají!'},
+  2:  {d:'Polojasno',           k:'partly',  h:'Slunce se pere s mraky… kdo vyhraje?'},
+  3:  {d:'Zataženo',            k:'cloud',   h:'Nebe se zabalilo do šedé deky.'},
+  45: {d:'Mlha',                k:'fog',     h:'Jako v pohádce – nic není vidět!'},
+  48: {d:'Namrzající mlha',     k:'fog',     h:'Pozor na namrzlé silnice a chodníky!'},
+  51: {d:'Slabé mrholení',      k:'drizzle', h:'Ani déšť, ani sucho – typický kompromis.'},
+  53: {d:'Mrholení',            k:'drizzle', h:'Vlasy se kroutí samy od sebe…'},
+  55: {d:'Silné mrholení',      k:'drizzle', h:'Tohle už je skoro pořádný déšť!'},
+  56: {d:'Mrznoucí mrholení',   k:'drizzle', h:'Opatrně, všude může být náledí!'},
+  57: {d:'Mrznoucí mrholení',   k:'drizzle', h:'Opatrně, všude může být náledí!'},
+  61: {d:'Slabý déšť',          k:'rain',    h:'Deštník? Risknete to, nebo ne?'},
+  63: {d:'Déšť',                k:'rain',    h:'Dobrý den na knížku a horký čaj!'},
+  65: {d:'Silný déšť',          k:'rain',    h:'Archa Noemova by se hodila!'},
+  66: {d:'Mrznoucí déšť',       k:'rain',    h:'Náledí! Radši zůstaňte doma.'},
+  67: {d:'Mrznoucí déšť',       k:'rain',    h:'Náledí! Radši zůstaňte doma.'},
+  71: {d:'Slabé sněžení',       k:'snow',    h:'První vločky! Děti ven, dospělí s čajem.'},
+  73: {d:'Sněžení',             k:'snow',    h:'Bílá peřina na zahradě!'},
+  75: {d:'Silné sněžení',       k:'snow',    h:'Lopata do ruky, nebo zůstat doma?'},
+  77: {d:'Sněhová zrna',        k:'snow',    h:'Drobné vločky – zima zkouší formu.'},
+  80: {d:'Přeháňky',            k:'showers', h:'Teď mokro, za chvíli slunce – počasí si hraje.'},
+  81: {d:'Přeháňky',            k:'showers', h:'Moravská přeháňka – deštník i brýle do tašky!'},
+  82: {d:'Silné přeháňky',      k:'showers', h:'Pořádná průtrž! Běžte pod střechu!'},
+  85: {d:'Sněhové přeháňky',    k:'snow',    h:'Trochu sněhu pro radost, trochu pro práci.'},
+  86: {d:'Sněhové přeháňky',    k:'snow',    h:'Sněží jako z nebe spadlo!'},
+  95: {d:'Bouřka',              k:'storm',   h:'Blesky řádí! Schovat elektroniku!'},
+  96: {d:'Bouřka s kroupami',   k:'storm',   h:'Bouřka s kroupami – auto radši do garáže!'},
+  99: {d:'Silná bouřka',        k:'storm',   h:'Doma nejlépe! Venku řádí živly.'}
 };
 
-function loadWeather() {
-  var t = 'https://api.open-meteo.com/v1/forecast?latitude=49.626&longitude=18.137&current_weather=true&timezone=Europe%2FPrague&forecast_days=1';
+function wInfo(code) {
+  return WK[code] || {d: 'Počasí', k: 'cloud', h: 'Počasí nás dnes překvapuje!'};
+}
+
+function numAt(a, i) {
+  if (!a || a[i] === null || a[i] === undefined) return null;
+  return a[i];
+}
+
+function dayLabel(dateStr, i) {
+  if (i === 0) return 'Dnes';
+  if (i === 1) return 'Zítra';
+  var p = dateStr.split('-');
+  var d = new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+  return DAYS[d.getDay()];
+}
+
+function renderForecast(data) {
+  if (!data || !data.daily || !data.daily.time) return false;
+  var dl    = data.daily;
+  var codes = dl.weather_code || dl.weathercode;
+  var tmax  = dl.temperature_2m_max, tmin = dl.temperature_2m_min;
+  var rain  = dl.precipitation_probability_max;
+  var wind  = dl.wind_speed_10m_max || dl.windspeed_10m_max;
+  if (!codes || !tmax || !tmin) return false;
+
+  var html = '', i, n = Math.min(3, dl.time.length);
+  for (i = 0; i < n; i++) {
+    var info = wInfo(codes[i]);
+    var r = numAt(rain, i);
+    html += '<div class="fc-day' + (i === 0 ? ' fc-today' : '') + '">' +
+      '<div class="fc-name">' + dayLabel(dl.time[i], i) + '</div>' +
+      '<div class="fc-ico">' + weatherSvg(info.k) + '</div>' +
+      '<div class="fc-desc">' + info.d + '</div>' +
+      '<div class="fc-max">' + fmtT(numAt(tmax, i)) + '</div>' +
+      '<div class="fc-min">' + fmtT(numAt(tmin, i)) + '</div>' +
+      '<div class="fc-rain">' + DROP_SVG + '<span>' + (r === null ? '–' : Math.round(r) + ' %') + '</span></div>' +
+      '</div>';
+  }
+  setEl('fc-days', html);
+
+  // hláška dne (při silném větru přednost větru)
+  var i0 = wInfo(codes[0]), w0 = numAt(wind, 0), tip = i0.h;
+  if (w0 !== null && w0 >= 45 && i0.k !== 'storm') {
+    tip = 'Dnes větrno (až ' + Math.round(w0) + ' km/h) – držte si klobouky!';
+  }
+  setEl('fc-tip', tip);
+
+  // dnešní min/max do karty venkovní teploty
+  setEl('out-mm', '<div class="mm-l">Dnes</div><div><span class="up">&#8593; ' + fmtT(numAt(tmax, 0)) +
+        '</span> <span class="dn">&#8595; ' + fmtT(numAt(tmin, 0)) + '</span></div>');
+  return true;
+}
+
+var fcRetry = null;
+function loadForecast() {
+  var t = 'https://api.open-meteo.com/v1/forecast?latitude=49.626&longitude=18.137' +
+          '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max' +
+          '&timezone=Europe%2FPrague&forecast_days=3';
   getJSON(px(t), function(err, data) {
-    if (err || !data || !data.current_weather) {
-      setEl('w-desc', 'Nedostupne'); setEl('w-hlaska', err || '?'); return;
+    if (err || !renderForecast(data)) {
+      setEl('fc-tip', 'Předpověď nedostupná (' + (err || 'data') + ')');
+      if (fcRetry) clearTimeout(fcRetry);
+      fcRetry = setTimeout(loadForecast, 60000);
+      return;
     }
-    var cw = data.current_weather, code = cw.weathercode, temp = cw.temperature;
-    var w = WC[code] || {d:'Kod '+code, h:'Pocasi nas prekvapuje!'};
-    var i = WI[code] || '(?)';
-    setEl('w-icon',   i);
-    setEl('w-desc',   w.d);
-    setEl('w-hlaska', w.h);
-    setEl('w-temp',   (Math.round(temp*10)/10) + '<span style="font-size:0.4em;color:#2a5577;"> C</span>');
+    var n = new Date();
+    setEl('fc-upd', 'akt. ' + pad(n.getHours()) + ':' + pad(n.getMinutes()));
   });
 }
 
-// REFRESH
+// ============================================================
+// OBNOVA DAT
+// ============================================================
 var TICK = 60, tick = 0;
+function loadAll() { loadSolar(); loadKotelna(); }
+
 function tickBar() {
   tick++;
-  setW('rffill', Math.round(tick/TICK*100)+'%');
-  if (tick >= TICK) { tick = 0; setW('rffill','0%'); loadAll(); }
+  setW('rf', Math.round(tick / TICK * 100) + '%');
+  if (tick >= TICK) { tick = 0; setW('rf', '0%'); loadAll(); }
 }
-function loadAll() { loadLightning(); loadSolar(); loadKotelna(); loadWeather(); }
+
+// předpověď každých 30 minut + při změně dne (svátek i popisky Dnes/Zítra)
+var lastDay = new Date().getDate();
+setInterval(function() {
+  var d = new Date().getDate();
+  if (d !== lastDay) { lastDay = d; updateSvatek(); loadForecast(); }
+}, 30000);
+setInterval(loadForecast, 30 * 60 * 1000);
 
 loadAll();
+loadForecast();
 setInterval(tickBar, 1000);
 </script>
 </body>
