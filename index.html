@@ -31,7 +31,7 @@ body {
 /* ================= HLAVIČKA ================= */
 #header {
   position: relative;
-  flex: 0 0 4.6rem;
+  flex: 0 0 5rem;
   display: flex;
   align-items: center;
   padding: 0 1rem;
@@ -56,9 +56,20 @@ body {
 #dn-day  { font-size: 1.55rem; font-weight: bold; color: #eaf5ff; }
 #dn-date { font-size: 1.15rem; color: #7fa6c9; }
 
-#nameday { margin-left: auto; text-align: right; line-height: 1.1; white-space: nowrap; }
-#sv-label { font-size: .85rem; letter-spacing: .2em; text-transform: uppercase; color: #6f93b8; }
-#sv-name  { font-size: 2rem; font-weight: bold; color: #ffd24a; }
+#nameday { flex: 1; min-width: 0; margin: 0 1rem; text-align: center; line-height: 1.1; white-space: nowrap; overflow: hidden; }
+#sv-label { font-size: 1rem; letter-spacing: .2em; text-transform: uppercase; color: #7fa6c9; }
+#sv-name  { font-size: 2.7rem; font-weight: bold; color: #ffd24a; }
+#sv-name.n1 { font-size: 2.7rem; }
+#sv-name.n2 { font-size: 2.2rem; }
+#sv-name.n3 { font-size: 1.8rem; }
+#sv-name.n4 { font-size: 1.4rem; }
+
+/* rodinné narozeniny / svátky - barevné blikání */
+@keyframes famB { 0% { color: #ff4fd8; } 25% { color: #ffe14a; } 50% { color: #35e0ff; } 75% { color: #7dff7a; } 100% { color: #ff4fd8; } }
+@keyframes famS { 0% { color: #ff9a3c; } 25% { color: #ffe14a; } 50% { color: #7dff7a; } 75% { color: #4fc3ff; } 100% { color: #ff9a3c; } }
+@keyframes famBlink { 0% { opacity: 1; } 50% { opacity: .25; } 100% { opacity: 1; } }
+#nameday.fam-b #sv-label, #nameday.fam-b #sv-name { animation: famB 2.4s linear infinite, famBlink 1s ease-in-out infinite; }
+#nameday.fam-s #sv-label, #nameday.fam-s #sv-name { animation: famS 2.4s linear infinite, famBlink 1s ease-in-out infinite; }
 
 #hdr-ctl { margin-left: 1.2rem; display: flex; align-items: center; }
 #motion-dot {
@@ -595,13 +606,97 @@ var SPECIAL = {
   'Dušičky': 1, 'Boží hod vánoční': 1
 };
 
+// ============================================================
+// RODINNÉ NAROZENINY A SVÁTKY
+// b = narozeniny [den, měsíc, rok], s = svátek [den, měsíc] (null = nemá)
+// Upozornění se ukáže den předem ("Zítra") a v den události ("Dnes") až do půlnoci.
+// ============================================================
+var FAMILY = [
+  {n:'Lenka',    nick:'Teta Lenička',      b:[18,1,1983],  s:[21,2]},
+  {n:'Marie',    nick:'Babička Maruška',   b:[2,2,1963],   s:[2,2]},
+  {n:'Zuzka',    nick:'Teta Zuzanka',      b:[22,7,1987],  s:[11,8]},
+  {n:'Josef',    nick:'Pepánek',           b:[26,6,1994],  s:[19,3]},
+  {n:'Josef',    nick:'Děda Pepa',         b:[14,9,1954],  s:[19,3]},
+  {n:'Vlasta',   nick:'Babička Vlastička', b:[24,11,1953], s:[23,12]},
+  {n:'Eliška',   nick:'Eliška',            b:[21,10,2013], s:[5,10]},
+  {n:'Vrtislav', nick:'Strejda Vráťa',     b:[20,3,1979],  s:[9,12]},
+  {n:'Petr',     nick:'Peťa od Zuzky',     b:[4,3,1975],   s:null},
+  {n:'Radek',    nick:'Ráďa',              b:[26,9,2007],  s:[21,3]},
+  {n:'Natálie',  nick:'Natálka',           b:[19,11,2003], s:[21,12]},
+  {n:'Jana',     nick:'Janička od Pepy',   b:[24,10,1994], s:[24,5]},
+  {n:'Viktorie', nick:'Viki',              b:[16,8,2023],  s:[10,3]},
+  {n:'Marek',    nick:'Mareček',           b:[12,6,2009],  s:[25,4]},
+  {n:'Adéla',    nick:'Adélka',            b:[22,6,2006],  s:[2,9]},
+  {n:'Jana',     nick:'Janička',           b:[11,6,1984],  s:[24,5]},
+  {n:'Lukáš',    nick:'Zachrč',            b:[21,7,1980],  s:[18,10]},
+  {n:'Emílie',   nick:'Teta Miluška',      b:[25,11,1966], s:[24,11]},
+  {n:'Martin',   nick:'Martin Kopřivnice', b:[21,10,1964], s:[11,11]}
+];
+
+function letTxt(n) { return n + (n === 1 ? ' rok' : ((n >= 2 && n <= 4) ? ' roky' : ' let')); }
+
+// události, které mají být právě vidět: when = 1 (zítra) nebo 0 (dnes)
+function computeFamily(now, list) {
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var out = [], i, k, y, occ, diff, p, d;
+  for (i = 0; i < list.length; i++) {
+    p = list[i];
+    for (k = 0; k < 2; k++) {
+      d = (k === 0) ? p.b : p.s;
+      if (!d) continue;
+      for (y = today.getFullYear(); y <= today.getFullYear() + 1; y++) {
+        occ = new Date(y, d[1] - 1, d[0]);
+        diff = Math.round((occ.getTime() - today.getTime()) / 86400000);
+        if (diff === 0 || diff === 1) {
+          out.push({ type: (k === 0 ? 'b' : 's'), when: diff, nick: p.nick,
+                     age: (k === 0 && d[2]) ? (y - d[2]) : null });
+        }
+      }
+    }
+  }
+  return out;
+}
+
+var famList = [], famIdx = 0;
+
+function nameSize(txt) {
+  var l = txt.length;
+  return l <= 16 ? 'n1' : (l <= 20 ? 'n2' : (l <= 25 ? 'n3' : 'n4'));
+}
+
+function renderNameday() {
+  var box = document.getElementById('nameday');
+  var nm  = document.getElementById('sv-name');
+  if (!box || !nm) return;
+  var label, name, ev, n;
+  if (famList.length) {
+    ev = famList[famIdx % famList.length];
+    label = (ev.when === 1 ? 'Zítra ' : 'Dnes ') + (ev.type === 'b' ? 'narozeniny' : 'svátek');
+    if (ev.age !== null) label += ' · ' + letTxt(ev.age);
+    name = ev.nick;
+    box.className = 'fam fam-' + ev.type;
+  } else {
+    n = new Date();
+    name = (SVATKY[n.getMonth()] || [])[n.getDate() - 1] || '';
+    label = SPECIAL[name] ? 'Dnes' : 'Svátek má';
+    box.className = '';
+  }
+  setEl('sv-label', label);
+  setEl('sv-name', name ? name : '&nbsp;');
+  nm.className = nameSize(name);
+}
+
 function updateSvatek() {
-  var n = new Date();
-  var s = (SVATKY[n.getMonth()] || [])[n.getDate() - 1] || '';
-  setEl('sv-label', SPECIAL[s] ? 'Dnes' : 'Svátek má');
-  setEl('sv-name', s ? s : '&nbsp;');
+  famList = computeFamily(new Date(), FAMILY);
+  if (famIdx >= famList.length) famIdx = 0;
+  renderNameday();
 }
 updateSvatek();
+setInterval(updateSvatek, 60000);
+// při více událostech najednou se po 6 s střídají
+setInterval(function() {
+  if (famList.length > 1) { famIdx = (famIdx + 1) % famList.length; renderNameday(); }
+}, 6000);
 
 // ============================================================
 // POMOCNÉ FUNKCE
