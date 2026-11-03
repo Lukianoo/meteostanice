@@ -118,7 +118,7 @@ body {
 .a-purple:before { background-color: #c98bff; }
 .a-green:before  { background-color: #4be37e; }
 
-.f-fc  { flex-grow: 1.75; }
+.f-fc  { flex-grow: 1; }
 .f-out { flex-grow: 1; }
 .f-sol { flex-grow: 1.2; }
 .f-rad { flex-grow: 1; }
@@ -232,20 +232,6 @@ body {
 .fc-rain { display: flex; align-items: center; font-size: 1.1rem; color: #8fd0ff; }
 .fc-rain svg { width: 1rem; height: 1rem; margin-right: .3rem; }
 
-#fc-tip {
-  margin-top: .4rem;
-  padding: .35rem .7rem;
-  border-radius: .5rem;
-  background-color: #2a2410;
-  border: 1px solid #5a4a14;
-  color: #ffd24a;
-  font-style: italic;
-  font-size: 1.1rem;
-  line-height: 1.2;
-  text-align: center;
-  min-height: 2.2rem;
-}
-
 /* ================= RADAR SRÁŽEK ================= */
 .radar-card { padding: 0; }
 .radar-card:before { display: none; }
@@ -258,7 +244,9 @@ body {
 .city { position: absolute; width: 0; height: 0; }
 .city i { position: absolute; left: -2px; top: -2px; width: 4px; height: 4px; border-radius: 50%; background-color: #c9dcf0; }
 .city b { position: absolute; left: 6px; top: -.45rem; font-size: .66rem; font-weight: normal; color: #9db9d6; white-space: nowrap; text-shadow: 0 0 3px #000, 0 0 3px #000; }
-#rm-lbl { position: absolute; margin: -.55rem 0 0 .95rem; font-size: .95rem; font-weight: bold; color: #ffffff; white-space: nowrap; text-shadow: 0 0 3px #000, 0 0 5px #000, 0 0 8px #000; }
+.city.big i { left: -2.5px; top: -2.5px; width: 5px; height: 5px; }
+.city.big b { font-size: .78rem; font-weight: bold; color: #dbeaf8; }
+#rm-lbl { position: absolute; margin: .7rem 0 0 0; -moz-transform: translateX(-50%); transform: translateX(-50%); font-size: .95rem; font-weight: bold; color: #ffffff; white-space: nowrap; text-shadow: 0 0 3px #000, 0 0 5px #000, 0 0 8px #000; }
 #rm-frames img { position: absolute; display: block; opacity: 0; }
 .rm-ring { position: absolute; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, .4); }
 .rm-ring span { position: absolute; left: .3rem; top: 50%; margin-top: -.45rem; font-size: .7rem; color: rgba(255, 255, 255, .75); text-shadow: 0 0 3px #000; }
@@ -338,7 +326,6 @@ body {
       <div class="card a-blue f-fc">
         <div class="ctitle">Předpověď &middot; Palkovice <span class="tr" id="fc-upd"></span></div>
         <div id="fc-days"><div class="fc-wait">Načítám předpověď…</div></div>
-        <div id="fc-tip"></div>
       </div>
 
       <div class="card radar-card f-rad">
@@ -1016,38 +1003,38 @@ var DROP_SVG = '<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">' +
 // PŘEDPOVĚĎ NA 3 DNY - Open-Meteo (zdarma, bez klíče)
 // ============================================================
 var WK = {
-  0:  {d:'Jasno',               k:'sun',     h:'Úžasný den – vylez ven a užij ho!'},
-  1:  {d:'Převážně jasno',      k:'mostly',  h:'Slunce vyhrává, mraky prohrávají!'},
-  2:  {d:'Polojasno',           k:'partly',  h:'Slunce se pere s mraky… kdo vyhraje?'},
-  3:  {d:'Zataženo',            k:'cloud',   h:'Nebe se zabalilo do šedé deky.'},
-  45: {d:'Mlha',                k:'fog',     h:'Jako v pohádce – nic není vidět!'},
-  48: {d:'Namrzající mlha',     k:'fog',     h:'Pozor na namrzlé silnice a chodníky!'},
-  51: {d:'Slabé mrholení',      k:'drizzle', h:'Ani déšť, ani sucho – typický kompromis.'},
-  53: {d:'Mrholení',            k:'drizzle', h:'Vlasy se kroutí samy od sebe…'},
-  55: {d:'Silné mrholení',      k:'drizzle', h:'Tohle už je skoro pořádný déšť!'},
-  56: {d:'Mrznoucí mrholení',   k:'drizzle', h:'Opatrně, všude může být náledí!'},
-  57: {d:'Mrznoucí mrholení',   k:'drizzle', h:'Opatrně, všude může být náledí!'},
-  61: {d:'Slabý déšť',          k:'rain',    h:'Deštník? Risknete to, nebo ne?'},
-  63: {d:'Déšť',                k:'rain',    h:'Dobrý den na knížku a horký čaj!'},
-  65: {d:'Silný déšť',          k:'rain',    h:'Archa Noemova by se hodila!'},
-  66: {d:'Mrznoucí déšť',       k:'rain',    h:'Náledí! Radši zůstaňte doma.'},
-  67: {d:'Mrznoucí déšť',       k:'rain',    h:'Náledí! Radši zůstaňte doma.'},
-  71: {d:'Slabé sněžení',       k:'snow',    h:'První vločky! Děti ven, dospělí s čajem.'},
-  73: {d:'Sněžení',             k:'snow',    h:'Bílá peřina na zahradě!'},
-  75: {d:'Silné sněžení',       k:'snow',    h:'Lopata do ruky, nebo zůstat doma?'},
-  77: {d:'Sněhová zrna',        k:'snow',    h:'Drobné vločky – zima zkouší formu.'},
-  80: {d:'Přeháňky',            k:'showers', h:'Teď mokro, za chvíli slunce – počasí si hraje.'},
-  81: {d:'Přeháňky',            k:'showers', h:'Moravská přeháňka – deštník i brýle do tašky!'},
-  82: {d:'Silné přeháňky',      k:'showers', h:'Pořádná průtrž! Běžte pod střechu!'},
-  85: {d:'Sněhové přeháňky',    k:'snow',    h:'Trochu sněhu pro radost, trochu pro práci.'},
-  86: {d:'Sněhové přeháňky',    k:'snow',    h:'Sněží jako z nebe spadlo!'},
-  95: {d:'Bouřka',              k:'storm',   h:'Blesky řádí! Schovat elektroniku!'},
-  96: {d:'Bouřka s kroupami',   k:'storm',   h:'Bouřka s kroupami – auto radši do garáže!'},
-  99: {d:'Silná bouřka',        k:'storm',   h:'Doma nejlépe! Venku řádí živly.'}
+  0:  {d:'Jasno',               k:'sun'},
+  1:  {d:'Převážně jasno',      k:'mostly'},
+  2:  {d:'Polojasno',           k:'partly'},
+  3:  {d:'Zataženo',            k:'cloud'},
+  45: {d:'Mlha',                k:'fog'},
+  48: {d:'Namrzající mlha',     k:'fog'},
+  51: {d:'Slabé mrholení',      k:'drizzle'},
+  53: {d:'Mrholení',            k:'drizzle'},
+  55: {d:'Silné mrholení',      k:'drizzle'},
+  56: {d:'Mrznoucí mrholení',   k:'drizzle'},
+  57: {d:'Mrznoucí mrholení',   k:'drizzle'},
+  61: {d:'Slabý déšť',          k:'rain'},
+  63: {d:'Déšť',                k:'rain'},
+  65: {d:'Silný déšť',          k:'rain'},
+  66: {d:'Mrznoucí déšť',       k:'rain'},
+  67: {d:'Mrznoucí déšť',       k:'rain'},
+  71: {d:'Slabé sněžení',       k:'snow'},
+  73: {d:'Sněžení',             k:'snow'},
+  75: {d:'Silné sněžení',       k:'snow'},
+  77: {d:'Sněhová zrna',        k:'snow'},
+  80: {d:'Přeháňky',            k:'showers'},
+  81: {d:'Přeháňky',            k:'showers'},
+  82: {d:'Silné přeháňky',      k:'showers'},
+  85: {d:'Sněhové přeháňky',    k:'snow'},
+  86: {d:'Sněhové přeháňky',    k:'snow'},
+  95: {d:'Bouřka',              k:'storm'},
+  96: {d:'Bouřka s kroupami',   k:'storm'},
+  99: {d:'Silná bouřka',        k:'storm'}
 };
 
 function wInfo(code) {
-  return WK[code] || {d: 'Počasí', k: 'cloud', h: 'Počasí nás dnes překvapuje!'};
+  return WK[code] || {d: 'Počasí', k: 'cloud'};
 }
 
 function numAt(a, i) {
@@ -1069,7 +1056,6 @@ function renderForecast(data) {
   var codes = dl.weather_code || dl.weathercode;
   var tmax  = dl.temperature_2m_max, tmin = dl.temperature_2m_min;
   var rain  = dl.precipitation_probability_max;
-  var wind  = dl.wind_speed_10m_max || dl.windspeed_10m_max;
   if (!codes || !tmax || !tmin) return false;
 
   var html = '', i, n = Math.min(3, dl.time.length);
@@ -1086,24 +1072,19 @@ function renderForecast(data) {
       '</div>';
   }
   setEl('fc-days', html);
-
-  // hláška dne (při silném větru přednost větru)
-  var i0 = wInfo(codes[0]), w0 = numAt(wind, 0), tip = i0.h;
-  if (w0 !== null && w0 >= 45 && i0.k !== 'storm') {
-    tip = 'Dnes větrno (až ' + Math.round(w0) + ' km/h) – držte si klobouky!';
-  }
-  setEl('fc-tip', tip);
+  fcOk = true;
   return true;
 }
 
-var fcRetry = null;
+var fcRetry = null, fcOk = false;
 function loadForecast() {
   var t = 'https://api.open-meteo.com/v1/forecast?latitude=49.626&longitude=18.137' +
-          '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max' +
+          '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
           '&timezone=Europe%2FPrague&forecast_days=3';
   getJSON(px(t), function(err, data) {
     if (err || !renderForecast(data)) {
-      setEl('fc-tip', 'Předpověď nedostupná (' + (err || 'data') + ')');
+      if (!fcOk) setEl('fc-days', '<div class="fc-wait">Předpověď nedostupná (' + (err || 'data') + ')</div>');
+      else setEl('fc-upd', 'neaktuální');
       if (fcRetry) clearTimeout(fcRetry);
       fcRetry = setTimeout(loadForecast, 60000);
       return;
@@ -1123,12 +1104,18 @@ var RD = {
   // ohraničení snímku (Mercator), ověřeno proti hranici ČR; obrázek 680 x 460 px
   lonL: 11.2381, lonR: 20.7923, latT: 52.1650, latB: 48.0409,
   lat: 49.626, lon: 18.137,       // Palkovice
-  z: 7, fx: 0.68, fy: 0.5,        // přiblížení mapy a poloha Palkovic v okně (zleva / shora)
+  // zobrazená oblast: celá ČR s malou rezervou, přiblížení se dopočítá podle velikosti okna
+  vw: 11.6, ve: 19.3, vs: 48.35, vn: 51.3,
+  z: 6.5,
   clipE: 19.62,                   // východněji snímek obsahuje chybná data (svislé pruhy), proto se ořízne
   slots: 10, keep: 8
 };
 var rdFrames = {}, rdTried = {}, rdOrder = [], rdIdx = 0, rdTimer = null, rdGeo = null, rdNone = false;
 
+function rdUY(lat) {
+  var r = lat * Math.PI / 180;
+  return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2;
+}
 function rdWX(lon) { return (lon + 180) / 360 * 256 * Math.pow(2, RD.z); }
 function rdWY(lat) {
   var r = lat * Math.PI / 180;
@@ -1160,11 +1147,11 @@ var GEO = {cz:[[2962,10172,34,0,0,11,4,3,-1,6,-7,6,7,3,2,3,4,-2,10,-2,7,-4,7,6,2
 
 // města do mapy: [název, délka, šířka]
 var CITIES = [
-  ['Ostrava', 18.2625, 49.8209], ['Olomouc', 17.2509, 49.5938], ['Zlín', 17.6627, 49.2265],
-  ['Brno', 16.6068, 49.1951], ['Jeseník', 17.2043, 50.2294], ['Hradec Králové', 15.8327, 50.2104],
-  ['Pardubice', 15.7812, 50.0343], ['Žilina', 18.7394, 49.2231], ['Trenčín', 18.0408, 48.8945],
-  ['Katowice', 19.0238, 50.2649], ['Bielsko-Biała', 19.0584, 49.8224], ['Kraków', 19.9450, 50.0647],
-  ['Opole', 17.9213, 50.6751], ['Wrocław', 17.0385, 51.1079]
+  ['Praha', 14.4378, 50.0755, 1], ['Brno', 16.6068, 49.1951, 1], ['Ostrava', 18.2625, 49.8209, 1],
+  ['Plzeň', 13.3736, 49.7384], ['České Budějovice', 14.4743, 48.9745], ['Karlovy Vary', 12.8720, 50.2319],
+  ['Ústí n. L.', 14.0323, 50.6607], ['Liberec', 15.0543, 50.7663], ['Hradec Králové', 15.8327, 50.2104],
+  ['Jihlava', 15.5871, 49.3961], ['Olomouc', 17.2509, 49.5938], ['Zlín', 17.6627, 49.2265],
+  ['Wrocław', 17.0385, 51.1079], ['Katowice', 19.0238, 50.2649], ['Žilina', 18.7394, 49.2231]
 ];
 
 // vlastní podkladová mapa (hranice států, města), značka Palkovic a kružnice 50 a 100 km
@@ -1176,8 +1163,11 @@ function rdLayout() {
   if (!box || !geo || !rings || !pin) return;
   var W = box.offsetWidth, H = box.offsetHeight;
   if (!W || !H) return;
+  // přiblížení tak, aby se do okna vešla celá zobrazená oblast (celá ČR)
+  var S = Math.min(W / ((RD.ve - RD.vw) / 360), H / (rdUY(RD.vs) - rdUY(RD.vn)));
+  RD.z = Math.max(5, Math.min(8, Math.log(S / 256) / Math.LN2));
   var n = Math.pow(2, RD.z), px = rdWX(RD.lon), py = rdWY(RD.lat);
-  var x0 = px - W * RD.fx, y0 = py - H * RD.fy;
+  var x0 = (rdWX(RD.vw) + rdWX(RD.ve)) / 2 - W / 2, y0 = (rdWY(RD.vn) + rdWY(RD.vs)) / 2 - H / 2;
   var order = ['ua', 'hu', 'at', 'de', 'sk', 'pl', 'cz'];
   var svg = '<svg width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">';
   var o, rr, r, i, ax, ay, dp, k, d, cx, cy, html = '', rk = [50, 100];
@@ -1205,7 +1195,7 @@ function rdLayout() {
     cx = rdWX(CITIES[k][1]) - x0;
     cy = rdWY(CITIES[k][2]) - y0;
     if (cx < 4 || cx > W - 50 || cy < 8 || cy > H - 8) continue;
-    html += '<div class="city" style="left:' + cx.toFixed(1) + 'px;top:' + cy.toFixed(1) + 'px"><i></i><b>' + CITIES[k][0] + '</b></div>';
+    html += '<div class="city' + (CITIES[k][3] ? ' big' : '') + '" style="left:' + cx.toFixed(1) + 'px;top:' + cy.toFixed(1) + 'px"><i></i><b>' + CITIES[k][0] + '</b></div>';
   }
   if (cities) cities.innerHTML = html;
 
