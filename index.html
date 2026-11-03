@@ -121,6 +121,7 @@ body {
 .f-fc  { flex-grow: 1.75; }
 .f-out { flex-grow: 1; }
 .f-sol { flex-grow: 1.1; }
+.f-rad { flex-grow: .9; }
 
 .ctitle {
   display: flex;
@@ -245,6 +246,34 @@ body {
   min-height: 2.2rem;
 }
 
+/* ================= RADAR SRÁŽEK ================= */
+.radar-card { padding: 0; }
+.radar-card:before { display: none; }
+#rm { position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background-color: #0b1522; }
+#rm-tiles, #rm-frames, #rm-rings { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+#rm-tiles img { position: absolute; display: block; width: 256px; height: 256px; }
+#rm-frames img { position: absolute; display: block; opacity: 0; }
+.rm-ring { position: absolute; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, .4); }
+.rm-ring span { position: absolute; left: .3rem; top: 50%; margin-top: -.45rem; font-size: .7rem; color: rgba(255, 255, 255, .75); text-shadow: 0 0 3px #000; }
+#rm-pin {
+  position: absolute;
+  width: .8rem; height: .8rem;
+  margin: -.4rem 0 0 -.4rem;
+  border-radius: 50%;
+  background-color: #ff3b5c;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 .25rem rgba(255, 59, 92, .35);
+}
+.rm-chip { position: absolute; padding: .15rem .5rem; border-radius: .4rem; background-color: rgba(5, 10, 18, .72); color: #bfe0ff; }
+.rm-t { left: .5rem; top: .4rem; text-transform: uppercase; letter-spacing: .1em; font-weight: bold; font-size: .8rem; }
+.rm-t span { text-transform: none; letter-spacing: 0; font-weight: normal; color: #8fb3d6; }
+.rm-time { right: .5rem; bottom: .4rem; font-weight: bold; font-size: 1.1rem; }
+.rm-attr { position: absolute; left: .4rem; bottom: .25rem; font-size: .6rem; color: rgba(220, 235, 255, .6); }
+#rm-dots { position: absolute; left: 0; right: 0; bottom: .45rem; text-align: center; }
+#rm-dots span { display: inline-block; width: .45rem; height: .45rem; border-radius: 50%; background-color: rgba(255, 255, 255, .3); margin: 0 .12rem; }
+#rm-dots span.on { background-color: #ffffff; }
+#rm-msg { position: absolute; left: 0; right: 0; top: 50%; margin-top: -.7rem; text-align: center; color: #8fb3d6; font-size: 1.1rem; }
+
 /* ================= ČERNÁ OBRAZOVKA / DETEKCE POHYBU ================= */
 #blackout {
   display: none;
@@ -358,33 +387,46 @@ body {
         </div>
       </div>
 
-      <div class="card a-purple">
-        <div class="ctitle">Obojživelný bojler</div>
-        <div class="body2">
-          <div>
-            <div class="lbl">Teplota vody v bojleru</div>
-            <div class="val c-purple" id="amb-val">---</div>
+      <div class="card a-green f-sol">
+        <div class="ctitle">Kotel Attack FD 25 Automat</div>
+        <div class="row2">
+          <div class="half">
+            <div class="body">
+              <div class="lbl">Obojživelný bojler</div>
+              <div class="val c-purple" id="amb-val">---</div>
+            </div>
+            <div class="mm sm" id="amb-mm"></div>
+            <div>
+              <div class="bar"><div class="bar-mask" id="amb-bar"></div></div>
+              <div class="scale"><span>0°</span><span>90°</span></div>
+            </div>
           </div>
-          <div class="mm" id="amb-mm"></div>
-        </div>
-        <div>
-          <div class="bar"><div class="bar-mask" id="amb-bar"></div></div>
-          <div class="scale"><span>0°</span><span>90°</span></div>
+          <div class="sep"></div>
+          <div class="half">
+            <div class="body">
+              <div class="lbl">Teplota na kotli</div>
+              <div class="val c-green" id="kot-val">---</div>
+            </div>
+            <div class="mm sm" id="kot-mm"></div>
+            <div>
+              <div class="bar"><div class="bar-mask" id="kot-bar"></div></div>
+              <div class="scale"><span>0°</span><span>90°</span></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="card a-green">
-        <div class="ctitle">Kotelna</div>
-        <div class="body2">
-          <div>
-            <div class="lbl">Teplota na kotli</div>
-            <div class="val c-green" id="kot-val">---</div>
-          </div>
-          <div class="mm" id="kot-mm"></div>
-        </div>
-        <div>
-          <div class="bar"><div class="bar-mask" id="kot-bar"></div></div>
-          <div class="scale"><span>0°</span><span>90°</span></div>
+      <div class="card radar-card f-rad">
+        <div id="rm">
+          <div id="rm-tiles"></div>
+          <div id="rm-frames"></div>
+          <div id="rm-rings"></div>
+          <div id="rm-pin"></div>
+          <div class="rm-chip rm-t">Radar srážek <span id="rm-age"></span></div>
+          <div class="rm-chip rm-time" id="rm-time">--:--</div>
+          <div id="rm-dots"></div>
+          <div class="rm-attr">ČHMÚ · © OpenStreetMap · © CARTO</div>
+          <div id="rm-msg">Načítám radar…</div>
         </div>
       </div>
 
@@ -1063,6 +1105,185 @@ function loadForecast() {
 }
 
 // ============================================================
+// RADAR SRÁŽEK ČHMÚ - výřez okolo Palkovic, animace posledních snímků
+// Snímky: opendata.chmi.cz (maximum odrazivosti, každých 10 min, čas UTC)
+// Podkladová mapa: CARTO (dark) / OpenStreetMap
+// ============================================================
+var RD = {
+  url: 'https://opendata.chmi.cz/meteorology/weather/radar/composite/maxz/png_masked/pacz2gmaps3.z_max3d.',
+  // ohraničení snímku (Mercator), ověřeno proti hranici ČR; obrázek 680 x 460 px
+  lonL: 11.2381, lonR: 20.7923, latT: 52.1650, latB: 48.0409,
+  lat: 49.626, lon: 18.137,       // Palkovice
+  z: 7, fx: 0.68, fy: 0.5,        // přiblížení mapy a poloha Palkovic v okně (zleva / shora)
+  slots: 10, keep: 8
+};
+var rdFrames = {}, rdTried = {}, rdOrder = [], rdIdx = 0, rdTimer = null, rdGeo = null, rdNone = false;
+
+function rdWX(lon) { return (lon + 180) / 360 * 256 * Math.pow(2, RD.z); }
+function rdWY(lat) {
+  var r = lat * Math.PI / 180;
+  return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * 256 * Math.pow(2, RD.z);
+}
+function rdSlotName(t) {
+  var d = new Date(t);
+  return '' + d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + '.' + pad(d.getUTCHours()) + pad(d.getUTCMinutes());
+}
+function rdSlotDate(s) {
+  return new Date(Date.UTC(parseInt(s.slice(0, 4), 10), parseInt(s.slice(4, 6), 10) - 1, parseInt(s.slice(6, 8), 10),
+                           parseInt(s.slice(9, 11), 10), parseInt(s.slice(11, 13), 10)));
+}
+// názvy snímků, nejnovější první (snímky vycházejí po 10 minutách s mírným zpožděním)
+function rdSlots() {
+  var step = 600000, t = Math.floor(new Date().getTime() / step) * step, out = [], i;
+  for (i = 0; i < RD.slots; i++) out.push(rdSlotName(t - i * step));
+  return out;
+}
+function rdPlace(el) {
+  if (!rdGeo) return;
+  var l = rdWX(RD.lonL) - rdGeo.x0, r = rdWX(RD.lonR) - rdGeo.x0;
+  var t = rdWY(RD.latT) - rdGeo.y0, b = rdWY(RD.latB) - rdGeo.y0;
+  el.style.left = l + 'px'; el.style.top = t + 'px';
+  el.style.width = (r - l) + 'px'; el.style.height = (b - t) + 'px';
+}
+
+// podkladová mapa, značka Palkovic a kružnice 50 a 100 km
+function rdLayout() {
+  var box = document.getElementById('rm'), tiles = document.getElementById('rm-tiles');
+  var rings = document.getElementById('rm-rings'), pin = document.getElementById('rm-pin');
+  if (!box || !tiles || !rings || !pin) return;
+  var W = box.offsetWidth, H = box.offsetHeight;
+  if (!W || !H) return;
+  var n = Math.pow(2, RD.z), px = rdWX(RD.lon), py = rdWY(RD.lat);
+  var x0 = px - W * RD.fx, y0 = py - H * RD.fy;
+  var tx, ty, im, c = 0, k, d, html = '', sub = ['a', 'b', 'c', 'd'], rk = [50, 100];
+  rdGeo = { x0: x0, y0: y0 };
+
+  tiles.innerHTML = '';
+  for (tx = Math.floor(x0 / 256); tx <= Math.floor((x0 + W) / 256); tx++) {
+    for (ty = Math.floor(y0 / 256); ty <= Math.floor((y0 + H) / 256); ty++) {
+      if (ty < 0 || ty >= n) continue;
+      im = document.createElement('img');
+      im.onerror = function() { this.style.display = 'none'; };
+      im.style.left = Math.round(tx * 256 - x0) + 'px';
+      im.style.top  = Math.round(ty * 256 - y0) + 'px';
+      im.src = 'https://' + sub[c++ % 4] + '.basemaps.cartocdn.com/dark_all/' + RD.z + '/' + (((tx % n) + n) % n) + '/' + ty + '.png';
+      tiles.appendChild(im);
+    }
+  }
+
+  pin.style.left = (px - x0) + 'px';
+  pin.style.top  = (py - y0) + 'px';
+  var mpp = 156543.03392 * Math.cos(RD.lat * Math.PI / 180) / n;   // metrů na pixel
+  for (k = 0; k < rk.length; k++) {
+    d = 2 * rk[k] * 1000 / mpp;
+    html += '<div class="rm-ring" style="left:' + (px - x0 - d / 2) + 'px;top:' + (py - y0 - d / 2) +
+            'px;width:' + d + 'px;height:' + d + 'px"><span>' + rk[k] + ' km</span></div>';
+  }
+  rings.innerHTML = html;
+  for (k in rdFrames) { if (rdFrames.hasOwnProperty(k)) rdPlace(rdFrames[k]); }
+}
+
+function rdAge() {
+  if (!rdOrder.length) return;
+  var m = Math.round((new Date().getTime() - rdSlotDate(rdOrder[rdOrder.length - 1]).getTime()) / 60000);
+  setEl('rm-age', '· snímek před ' + (m < 0 ? 0 : m) + ' min');
+}
+
+function rdShow(i) {
+  var j, d, dots = '';
+  for (j = 0; j < rdOrder.length; j++) {
+    rdFrames[rdOrder[j]].style.opacity = (j === i) ? '0.85' : '0';
+    dots += '<span' + (j === i ? ' class="on"' : '') + '></span>';
+  }
+  d = rdSlotDate(rdOrder[i]);
+  setEl('rm-time', pad(d.getHours()) + ':' + pad(d.getMinutes()));
+  setEl('rm-dots', dots);
+}
+
+// smyčka: snímky po 0,65 s, na nejnovějším chvíli počká
+function rdTick() {
+  if (rdTimer) clearTimeout(rdTimer);
+  rdTimer = null;
+  if (!rdOrder.length) return;
+  rdIdx = (rdIdx + 1) % rdOrder.length;
+  rdShow(rdIdx);
+  rdTimer = setTimeout(rdTick, rdIdx === rdOrder.length - 1 ? 2500 : 650);
+}
+
+function rdBuild() {
+  var slots = rdSlots(), keep = {}, i, k, list = [];
+  for (i = 0; i < slots.length; i++) { if (rdFrames[slots[i]]) list.push(slots[i]); }
+  list = list.slice(0, RD.keep);
+  for (i = 0; i < list.length; i++) keep[list[i]] = 1;
+  for (k in rdFrames) {
+    if (rdFrames.hasOwnProperty(k) && !keep[k]) {
+      if (rdFrames[k].parentNode) rdFrames[k].parentNode.removeChild(rdFrames[k]);
+      delete rdFrames[k];
+    }
+  }
+  rdOrder = list.reverse();   // nejstarší první
+  if (rdOrder.length) {
+    setEl('rm-msg', '');
+    rdAge();
+    rdIdx = rdOrder.length - 1;
+    rdShow(rdIdx);
+    if (rdTimer) clearTimeout(rdTimer);
+    rdTimer = null;
+    if (rdOrder.length > 1) rdTimer = setTimeout(rdTick, 2500);
+  } else if (rdNone) {
+    setEl('rm-msg', 'Radar nedostupný');
+    setEl('rm-time', '--:--');
+    setEl('rm-dots', '');
+  }
+}
+
+function rdLoad() {
+  var slots = rdSlots(), now = new Date().getTime(), i, todo = [], left;
+  for (i = 0; i < slots.length; i++) {
+    if (rdFrames[slots[i]]) continue;
+    if (rdTried[slots[i]] && now - rdTried[slots[i]] < 240000) continue;
+    todo.push(slots[i]);
+  }
+  if (!todo.length) { rdBuild(); return; }
+  left = todo.length;
+
+  function finish() {
+    var q;
+    rdNone = true;
+    for (q = 0; q < slots.length; q++) { if (rdFrames[slots[q]]) rdNone = false; }
+    rdBuild();
+  }
+  function one() { left--; if (left === 0) finish(); }
+
+  for (i = 0; i < todo.length; i++) {
+    (function(slot) {
+      var im = new Image();
+      rdTried[slot] = now;
+      im.onload = function() {
+        if (!rdGeo) rdLayout();
+        im.style.opacity = '0';
+        rdPlace(im);
+        document.getElementById('rm-frames').appendChild(im);
+        rdFrames[slot] = im;
+        one();
+      };
+      im.onerror = function() { one(); };
+      im.src = RD.url + slot + '.0.png';
+    })(todo[i]);
+  }
+  // pojistka, kdyby některý snímek nikdy nedoběhl
+  setTimeout(function() { if (left > 0) { left = 0; finish(); } }, 25000);
+}
+
+function rdInit() {
+  rdLayout();
+  rdLoad();
+  setInterval(rdLoad, 5 * 60 * 1000);
+  setInterval(rdAge, 60000);
+  window.addEventListener('resize', function() { rdLayout(); });
+}
+
+// ============================================================
 // OBNOVA DAT
 // ============================================================
 var TICK = 60, tick = 0;
@@ -1087,6 +1308,7 @@ loadForecast();
 setInterval(tickBar, 1000);
 setTimeout(startHistory, 3000);
 setInterval(startHistory, 60 * 60 * 1000);
+rdInit();
 </script>
 </body>
 </html>
